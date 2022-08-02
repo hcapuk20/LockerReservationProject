@@ -3280,11 +3280,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\hakan\\.netProjects\\LRProject\\LRProject.csproj",
+      "projectUniqueName": "C:\\Users\\hakan\\.netProjects\\LRProject_Github\\LockerReservationProject\\Backend\\LRProject\\LRProject.csproj",
       "projectName": "LRProject",
-      "projectPath": "c:\\Users\\hakan\\.netProjects\\LRProject\\LRProject.csproj",
+      "projectPath": "C:\\Users\\hakan\\.netProjects\\LRProject_Github\\LockerReservationProject\\Backend\\LRProject\\LRProject.csproj",
       "packagesPath": "C:\\Users\\hakan\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\hakan\\.netProjects\\LRProject\\obj\\",
+      "outputPath": "C:\\Users\\hakan\\.netProjects\\LRProject_Github\\LockerReservationProject\\Backend\\LRProject\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\hakan\\AppData\\Roaming\\NuGet\\NuGet.Config",

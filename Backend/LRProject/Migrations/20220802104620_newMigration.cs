@@ -5,7 +5,7 @@
 namespace LRProject.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class newMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,30 +14,30 @@ namespace LRProject.Migrations
                 name: "SourceGroups",
                 columns: table => new
                 {
-                    Source_Group_Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SourceGroups", x => x.Source_Group_Id);
+                    table.PrimaryKey("PK_SourceGroups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Sources",
                 columns: table => new
                 {
-                    Source_Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     SourceGroupId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sources", x => x.Source_Id);
+                    table.PrimaryKey("PK_Sources", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Sources_SourceGroups_SourceGroupId",
                         column: x => x.SourceGroupId,
                         principalTable: "SourceGroups",
-                        principalColumn: "Source_Group_Id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 

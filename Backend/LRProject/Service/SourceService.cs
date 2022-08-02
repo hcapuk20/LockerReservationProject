@@ -17,10 +17,10 @@ namespace LRProject.Service
         }
 
         private List<Source> _sourceList = new List<Source>{
-            new Source(){Source_Id = 1},
-            new Source(){Source_Id = 2},
-            new Source(){Source_Id = 3},
-            new Source(){Source_Id = 4},
+            new Source(){Id = 1},
+            new Source(){Id = 2},
+            new Source(){Id = 3},
+            new Source(){Id = 4},
         };
         private List<Employee> _employeeList = new List<Employee>{
             new Employee(){Employee_Id = 1, Name = "Hakan"},
@@ -35,10 +35,13 @@ namespace LRProject.Service
             new Owns(){Source_Id = 4, Employee_Id = 3},
         };
 
-        public async Task<List<Source>> AddSource(int source_id, string type)
+        public async Task<List<Source>> AddSource(int source_id, int source_group_id)
         {
-            _sourceList.Add(new Source { Source_Id = source_id });
-            return _sourceList;
+
+            var newSource = new Source() { Id = source_id, SourceGroupId = source_group_id };
+            _context.Sources.Add(newSource);
+            await _context.SaveChangesAsync();
+            return await _context.Sources.ToListAsync();
         }
 
 
@@ -66,18 +69,15 @@ namespace LRProject.Service
 
         public async Task<List<Source>> RemoveSource(int source_id)
         {
-            //remove from source list
-            _sourceList.RemoveAll(s => s.Source_Id == source_id);
-            // remove from owns list
-            _ownsList.RemoveAll(s => s.Source_Id == source_id);
-
-            return _sourceList;
-
+            var source = _context.Sources.First(s => s.Id == source_id);
+            _context.Sources.Remove(source);
+            await _context.SaveChangesAsync();
+            return await _context.Sources.ToListAsync();
         }
 
         public async Task<List<SourceGroup>> AddSourceGroup(int SG_id, string name, int cap)
         {
-            SourceGroup newSG = new SourceGroup() { Source_Group_Id = SG_id, Name = name, Capacity = cap };
+            SourceGroup newSG = new SourceGroup() { Id = SG_id, Name = name, Capacity = cap };
             _context.SourceGroups.Add(newSG);
             await _context.SaveChangesAsync();
             return await _context.SourceGroups.ToListAsync();

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xSCCaGCgriOJ3eYbQ42MfLR/Ku6lePrRNetj8Z4jFxaRzUO/hmgsAeU1KgI7dQsG6G4q7VuIKISAa8+maiLQJQ==",
+  "dgSpecHash": "HjU9eJq3XXGZv34fbBdlRtjbKSDavg8s2hhwc+hPrssiho6HGSZFltm0SmwmBhj2xYWy3Malet+zWlD4B4JtYg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\hakan\\.netProjects\\LRProject\\LRProject.csproj",
+  "projectFilePath": "C:\\Users\\hakan\\.netProjects\\LRProject_Github\\LockerReservationProject\\Backend\\LRProject\\LRProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hakan\\.nuget\\packages\\azure.core\\1.20.0\\azure.core.1.20.0.nupkg.sha512",
     "C:\\Users\\hakan\\.nuget\\packages\\azure.identity\\1.5.0\\azure.identity.1.5.0.nupkg.sha512",

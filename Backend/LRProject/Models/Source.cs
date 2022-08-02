@@ -11,7 +11,7 @@ namespace LRProject.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
-        public int Source_Id { get; set; }
+        public int Id { get; set; }
         public SourceGroup SourceGroup { get; set; }
         public int SourceGroupId { get; set; }
 

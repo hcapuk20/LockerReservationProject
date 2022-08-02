@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LRProject.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220801111515_Initial")]
-    partial class Initial
+    [Migration("20220802104620_newMigration")]
+    partial class newMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,13 +26,13 @@ namespace LRProject.Migrations
 
             modelBuilder.Entity("LRProject.Models.Source", b =>
                 {
-                    b.Property<int>("Source_Id")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<int>("SourceGroupId")
                         .HasColumnType("int");
 
-                    b.HasKey("Source_Id");
+                    b.HasKey("Id");
 
                     b.HasIndex("SourceGroupId");
 
@@ -41,7 +41,7 @@ namespace LRProject.Migrations
 
             modelBuilder.Entity("LRProject.Models.SourceGroup", b =>
                 {
-                    b.Property<int>("Source_Group_Id")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Capacity")
@@ -51,7 +51,7 @@ namespace LRProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Source_Group_Id");
+                    b.HasKey("Id");
 
                     b.ToTable("SourceGroups");
                 });

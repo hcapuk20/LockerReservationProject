@@ -12,7 +12,7 @@ namespace LRProject.Service
 
         Task<List<Owns>> GetAllRelationships();
 
-        Task<List<Source>> AddSource(int source_id, String type);
+        Task<List<Source>> AddSource(int source_id, int source_group_id);
 
         Task<List<Owns>> ManualAddRelationship(int source_id, int employee_id);
 

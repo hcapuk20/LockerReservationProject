@@ -28,9 +28,9 @@ namespace LRProject.Controllers
         }
         [HttpPost]
         [Route("addSource")]
-        public async Task<ActionResult<List<Source>>> AddSource(int id, string type)
+        public async Task<ActionResult<List<Source>>> AddSource(int id, int sg_id)
         {
-            return Ok(await _ISourceService.AddSource(id, type));
+            return Ok(await _ISourceService.AddSource(id, sg_id));
         }
         [HttpPost]
         [Route("manualAddRelationship")]
