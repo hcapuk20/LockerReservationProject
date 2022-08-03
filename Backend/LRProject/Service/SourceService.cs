@@ -16,24 +16,8 @@ namespace LRProject.Service
             _context = context;
         }
 
-        private List<Source> _sourceList = new List<Source>{
-            new Source(){Id = 1},
-            new Source(){Id = 2},
-            new Source(){Id = 3},
-            new Source(){Id = 4},
-        };
-        private List<Employee> _employeeList = new List<Employee>{
-            new Employee(){Employee_Id = 1, Name = "Hakan"},
-            new Employee(){Employee_Id = 2, Name = "Sevval"},
-            new Employee(){Employee_Id = 3, Name = "Mert"},
-            new Employee(){Employee_Id = 4, Name = "Gaye"},
-        };
-        private List<Owns> _ownsList = new List<Owns>{
-            new Owns(){Source_Id = 1, Employee_Id = 4},
-            new Owns(){Source_Id = 2, Employee_Id = 1},
-            new Owns(){Source_Id = 3, Employee_Id = 2},
-            new Owns(){Source_Id = 4, Employee_Id = 3},
-        };
+
+
 
         public async Task<List<Source>> AddSource(int source_id, int source_group_id)
         {
@@ -46,10 +30,6 @@ namespace LRProject.Service
 
 
 
-        public async Task<List<Owns>> GetAllRelationships()
-        {
-            return _ownsList;
-        }
 
         public async Task<List<SourceGroup>> GetAllSourceGroups()
         {
@@ -61,11 +41,6 @@ namespace LRProject.Service
             return await _context.Sources.ToListAsync();
         }
 
-        public async Task<List<Owns>> ManualAddRelationship(int source_id, int employee_id)
-        {
-            _ownsList.Add(new Owns { Source_Id = source_id, Employee_Id = employee_id });
-            return _ownsList;
-        }
 
         public async Task<List<Source>> RemoveSource(int source_id)
         {
@@ -82,5 +57,33 @@ namespace LRProject.Service
             await _context.SaveChangesAsync();
             return await _context.SourceGroups.ToListAsync();
         }
+
+        public async Task<List<Employee>> AddEmployee(int employee_id, string name)
+        {
+            Employee newEmployee = new Employee() { Id = employee_id, Name = name };
+            _context.Employees.Add(newEmployee);
+            await _context.SaveChangesAsync();
+            return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<List<Employee>> GetAllEmployees()
+        {
+            return await _context.Employees.Include(c => c.Sources).ToListAsync();
+        }
+
+        public async Task<Employee> AddRelationship(int employee_id, int source_id)
+        {
+            var employee = await _context.Employees.FindAsync(employee_id);
+            var source = await _context.Sources.FindAsync(source_id);
+            employee.Sources.Add(source);
+
+
+            await _context.SaveChangesAsync();
+
+            return employee;
+
+        }
+
+
     }
 }

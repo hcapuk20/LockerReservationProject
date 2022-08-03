@@ -21,6 +21,35 @@ namespace LRProject.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("EmployeeSource", b =>
+                {
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourcesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeesId", "SourcesId");
+
+                    b.HasIndex("SourcesId");
+
+                    b.ToTable("EmployeeSource");
+                });
+
+            modelBuilder.Entity("LRProject.Models.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("LRProject.Models.Source", b =>
                 {
                     b.Property<int>("Id")
@@ -51,6 +80,21 @@ namespace LRProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SourceGroups");
+                });
+
+            modelBuilder.Entity("EmployeeSource", b =>
+                {
+                    b.HasOne("LRProject.Models.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LRProject.Models.Source", null)
+                        .WithMany()
+                        .HasForeignKey("SourcesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LRProject.Models.Source", b =>

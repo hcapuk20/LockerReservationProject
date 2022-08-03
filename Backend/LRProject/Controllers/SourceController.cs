@@ -21,10 +21,22 @@ namespace LRProject.Controllers
 
         }
         [HttpGet]
+        [Route("getAllEmployees")]
+        public async Task<ActionResult<List<Employee>>> GetAllEmployees()
+        {
+            return Ok(await _ISourceService.GetAllEmployees());
+        }
+        [HttpGet]
         [Route("getAllSources")]
         public async Task<ActionResult<List<Source>>> GetAllSources()
         {
             return Ok(await _ISourceService.GetAllSources());
+        }
+        [HttpPost]
+        [Route("addEmployee")]
+        public async Task<ActionResult<List<Employee>>> AddEmployee(int employee_id, string name)
+        {
+            return Ok(await _ISourceService.AddEmployee(employee_id, name));
         }
         [HttpPost]
         [Route("addSource")]
@@ -32,12 +44,7 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.AddSource(id, sg_id));
         }
-        [HttpPost]
-        [Route("manualAddRelationship")]
-        public async Task<ActionResult<List<Owns>>> ManualAddRelationship(int source_id, int employee_id)
-        {
-            return Ok(await _ISourceService.ManualAddRelationship(source_id, employee_id));
-        }
+
 
         [HttpDelete]
         [Route("removeSource")]
@@ -46,12 +53,6 @@ namespace LRProject.Controllers
             return Ok(await _ISourceService.RemoveSource(source_id));
         }
 
-        [HttpGet]
-        [Route("getRelationships")]
-        public async Task<ActionResult<List<Owns>>> GetAllRelationships()
-        {
-            return Ok(await _ISourceService.GetAllRelationships());
-        }
         [HttpGet]
         [Route("getAllSourceGroups")]
         public async Task<ActionResult<List<SourceGroup>>> GetAllSourceGroups()
@@ -63,6 +64,12 @@ namespace LRProject.Controllers
         public async Task<ActionResult<List<SourceGroup>>> AddSourceGroup(int sourceGroup_id, string name, int cap)
         {
             return Ok(await _ISourceService.AddSourceGroup(sourceGroup_id, name, cap));
+        }
+        [HttpPost]
+        [Route("addRelationship")]
+        public async Task<ActionResult<Employee>> AddRelationship(int employee_id, int source_id)
+        {
+            return Ok(await _ISourceService.AddRelationship(employee_id, source_id));
         }
 
 

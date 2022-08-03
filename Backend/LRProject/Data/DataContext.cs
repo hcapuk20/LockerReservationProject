@@ -13,5 +13,6 @@ namespace LRProject.Data
 
         public DbSet<SourceGroup> SourceGroups { get; set; }
         public DbSet<Source> Sources { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LRProject.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220802104620_newMigration")]
-    partial class newMigration
+    [Migration("20220803071237_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,35 @@ namespace LRProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("EmployeeSource", b =>
+                {
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourcesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeesId", "SourcesId");
+
+                    b.HasIndex("SourcesId");
+
+                    b.ToTable("EmployeeSource");
+                });
+
+            modelBuilder.Entity("LRProject.Models.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Employees");
+                });
 
             modelBuilder.Entity("LRProject.Models.Source", b =>
                 {
@@ -54,6 +83,21 @@ namespace LRProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SourceGroups");
+                });
+
+            modelBuilder.Entity("EmployeeSource", b =>
+                {
+                    b.HasOne("LRProject.Models.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LRProject.Models.Source", null)
+                        .WithMany()
+                        .HasForeignKey("SourcesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LRProject.Models.Source", b =>
