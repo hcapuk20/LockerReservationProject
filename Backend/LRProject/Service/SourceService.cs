@@ -16,31 +16,25 @@ namespace LRProject.Service
             _context = context;
         }
 
-
-
-
         public async Task<List<Source>> AddSource(int source_id, int source_group_id)
         {
-
             var newSource = new Source() { Id = source_id, SourceGroupId = source_group_id };
+            //var SG = await _context.SourceGroups.FindAsync(source_group_id);
             _context.Sources.Add(newSource);
+            //SG.Sources.Add(newSource);
             await _context.SaveChangesAsync();
             return await _context.Sources.ToListAsync();
         }
 
-
-
-
         public async Task<List<SourceGroup>> GetAllSourceGroups()
         {
-            return await _context.SourceGroups.ToListAsync();
+            return await _context.SourceGroups.Include(s => s.Sources).ToListAsync();
         }
 
         public async Task<List<Source>> GetAllSources()
         {
             return await _context.Sources.ToListAsync();
         }
-
 
         public async Task<List<Source>> RemoveSource(int source_id)
         {
@@ -77,11 +71,8 @@ namespace LRProject.Service
             var source = await _context.Sources.FindAsync(source_id);
             employee.Sources.Add(source);
 
-
             await _context.SaveChangesAsync();
-
             return employee;
-
         }
 
 

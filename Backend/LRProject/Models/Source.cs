@@ -13,11 +13,10 @@ namespace LRProject.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int Id { get; set; }
-
+        [JsonIgnore]
         public SourceGroup SourceGroup { get; set; }
         public int SourceGroupId { get; set; }
         [JsonIgnore]
         public List<Employee> Employees { get; set; }
-
     }
 }

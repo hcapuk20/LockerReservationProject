@@ -14,7 +14,6 @@ namespace LRProject.Models
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Capacity { get; set; }
-        public List<Source> Sources { get; set; }
-
+        public List<Source> Sources { get; set; } = new List<Source>();
     }
 }

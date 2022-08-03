@@ -20,6 +20,7 @@ namespace LRProject.Controllers
             _ISourceService = sourceService;
 
         }
+
         [HttpGet]
         [Route("getAllEmployees")]
         public async Task<ActionResult<List<Employee>>> GetAllEmployees()
@@ -32,19 +33,20 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.GetAllSources());
         }
+
         [HttpPost]
         [Route("addEmployee")]
         public async Task<ActionResult<List<Employee>>> AddEmployee(int employee_id, string name)
         {
             return Ok(await _ISourceService.AddEmployee(employee_id, name));
         }
+
         [HttpPost]
         [Route("addSource")]
         public async Task<ActionResult<List<Source>>> AddSource(int id, int sg_id)
         {
             return Ok(await _ISourceService.AddSource(id, sg_id));
         }
-
 
         [HttpDelete]
         [Route("removeSource")]
@@ -59,12 +61,14 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.GetAllSourceGroups());
         }
+
         [HttpPost]
         [Route("addSourceGroup")]
         public async Task<ActionResult<List<SourceGroup>>> AddSourceGroup(int sourceGroup_id, string name, int cap)
         {
             return Ok(await _ISourceService.AddSourceGroup(sourceGroup_id, name, cap));
         }
+
         [HttpPost]
         [Route("addRelationship")]
         public async Task<ActionResult<Employee>> AddRelationship(int employee_id, int source_id)
