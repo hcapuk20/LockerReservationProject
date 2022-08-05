@@ -75,7 +75,48 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.AddRelationship(employee_id, source_id));
         }
-
+        [HttpGet]
+        [Route("getSourcesOfEmployee")]
+        public async Task<ActionResult<List<Source>>> GetSourcesOfEmployee(int employee_id)
+        {
+            return Ok(await _ISourceService.GetSourcesOfEmployee(employee_id));
+        }
+        [HttpGet]
+        [Route("getOwnersOfSource")]
+        public async Task<ActionResult<List<Employee>>> GetOwnersOfSource(int source_id)
+        {
+            return Ok(await _ISourceService.GetOwnersOfSource(source_id));
+        }
+        [HttpDelete]
+        [Route("removeEmployee")]
+        public async Task<ActionResult<List<Employee>>> RemoveEmployee(int employee_id)
+        {
+            return Ok(await _ISourceService.RemoveEmployee(employee_id));
+        }
+        [HttpDelete]
+        [Route("removeSourceGroup")]
+        public async Task<ActionResult<List<SourceGroup>>> RemoveSourceGroup(int source_group_id)
+        {
+            return Ok(await _ISourceService.RemoveSourceGroup(source_group_id));
+        }
+        [HttpGet]
+        [Route("getEmployeeById")]
+        public async Task<ActionResult<Employee>> GetEmployeeById(int employee_id)
+        {
+            return Ok(await _ISourceService.GetEmployeeById(employee_id));
+        }
+        [HttpDelete]
+        [Route("removeRelationship")]
+        public async Task<ActionResult<Employee>> RemoveRelationship(int employee_id, int source_id)
+        {
+            return Ok(await _ISourceService.RemoveRelationship(employee_id, source_id));
+        }
+        [HttpPost]
+        [Route("addAdministration")]
+        public async Task<ActionResult<Employee>> AddAdministration(int employee_id, int sg_id)
+        {
+            return Ok(await _ISourceService.AddAdministration(employee_id, sg_id));
+        }
 
     }
 }

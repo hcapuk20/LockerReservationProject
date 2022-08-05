@@ -12,10 +12,17 @@ namespace LRProject.Service
         Task<List<Source>> AddSource(int source_id, int source_group_id);
         Task<List<Employee>> AddEmployee(int employee_id, string name);
         Task<List<Employee>> GetAllEmployees();
+        Task<Employee> GetEmployeeById(int employee_id);
         Task<List<Source>> RemoveSource(int source_id);
+        Task<List<Employee>> RemoveEmployee(int employee_id);
         Task<List<SourceGroup>> GetAllSourceGroups();
         Task<List<SourceGroup>> AddSourceGroup(int SG_id, string name, int cap);
         Task<Employee> AddRelationship(int employee_id, int source_id);
+        Task<List<Source>> GetSourcesOfEmployee(int employee_id);
+        Task<List<Employee>> GetOwnersOfSource(int source_id);
+        Task<List<SourceGroup>> RemoveSourceGroup(int sg_id);
+        Task<Employee> RemoveRelationship(int employee_id, int source_id);
+        Task<Employee> AddAdministration(int employee_id, int sg_id);
 
     }
 }

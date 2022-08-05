@@ -14,5 +14,8 @@ namespace LRProject.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public List<Source> Sources { get; set; } = new List<Source>();
+        // source groups that can be manipulated by this user (Administration)
+        public virtual List<SourceGroup> SourceGroups { get; set; } = new List<SourceGroup>();
+
     }
 }

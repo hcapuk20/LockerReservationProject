@@ -62,7 +62,7 @@ namespace LRProject.Service
 
         public async Task<List<Employee>> GetAllEmployees()
         {
-            return await _context.Employees.Include(c => c.Sources).ToListAsync();
+            return await _context.Employees.Include(c => c.Sources).Include(c => c.SourceGroups).ToListAsync();
         }
 
         public async Task<Employee> AddRelationship(int employee_id, int source_id)
@@ -75,6 +75,65 @@ namespace LRProject.Service
             return employee;
         }
 
+        public async Task<List<Source>> GetSourcesOfEmployee(int employee_id)
+        {
+            var sources = _context.Employees.Where(x => x.Id == employee_id).SelectMany(e => e.Sources);
+            return sources.ToList();
+        }
 
+        public async Task<List<Employee>> GetOwnersOfSource(int source_id)
+        {
+            var employees = _context.Sources.Where(s => s.Id == source_id).SelectMany(x => x.Employees);
+            return employees.ToList();
+        }
+
+        public async Task<List<Employee>> RemoveEmployee(int employee_id)
+        {
+            var employee = _context.Employees.First(s => s.Id == employee_id);
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+            return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<List<SourceGroup>> RemoveSourceGroup(int sg_id)
+        {
+            var sg = _context.SourceGroups.First(s => s.Id == sg_id);
+            _context.SourceGroups.Remove(sg);
+            await _context.SaveChangesAsync();
+            return await _context.SourceGroups.ToListAsync();
+        }
+
+        public async Task<Employee> GetEmployeeById(int employee_id)
+        {
+            var employee = await _context.Employees.FindAsync(employee_id);
+            return employee;
+        }
+
+        public async Task<Employee> RemoveRelationship(int employee_id, int source_id)
+        {
+            var employee = _context.Employees.Include(e => e.Sources).SingleOrDefault(e => e.Id == employee_id);
+
+
+            if (employee != null)
+            {
+                foreach (var source in employee.Sources.Where(s => s.Id == source_id).ToList())
+                {
+                    employee.Sources.Remove(source);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return employee;
+        }
+
+        public async Task<Employee> AddAdministration(int employee_id, int sg_id)
+        {
+            var employee = await _context.Employees.FindAsync(employee_id);
+            var sg = await _context.SourceGroups.FindAsync(sg_id);
+            employee.SourceGroups.Add(sg);
+
+            await _context.SaveChangesAsync();
+            return employee;
+        }
     }
 }
