@@ -1,8 +1,8 @@
 # How to run:
 # Packages to install:
 ### node.js
-if you do not have node.js, install it from this [link]. (https://nodejs.org/en/) 
-to check if its installed properly, first open your terminal. Then  type  `npm -v` to check the version. 
+if you do not have node.js, install it from this [link](https://nodejs.org/en/). 
+To check if its installed properly, first open your terminal. Then  type  `npm -v` to check the version. 
 You should see something like '8.5.5' in your terminal if its installed succesfully.
 
 ### installing dependencies:
