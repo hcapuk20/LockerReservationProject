@@ -23,7 +23,7 @@ namespace LRProject.Controllers
 
         [HttpGet]
         [Route("getAllEmployees")]
-        public async Task<ActionResult<List<Employee>>> GetAllEmployees()
+        public async Task<ActionResult<List<ReturnEmployeeDTO>>> GetAllEmployees()
         {
             return Ok(await _ISourceService.GetAllEmployees());
         }
@@ -36,9 +36,9 @@ namespace LRProject.Controllers
 
         [HttpPost]
         [Route("addEmployee")]
-        public async Task<ActionResult<List<Employee>>> AddEmployee(int employee_id, string name)
+        public async Task<ActionResult<List<Employee>>> AddEmployee(int employee_id, string password, string name)
         {
-            return Ok(await _ISourceService.AddEmployee(employee_id, name));
+            return Ok(await _ISourceService.AddEmployee(employee_id, password, name));
         }
 
         [HttpPost]
@@ -101,7 +101,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getEmployeeById")]
-        public async Task<ActionResult<Employee>> GetEmployeeById(int employee_id)
+        public async Task<ActionResult<ReturnEmployeeDTO>> GetEmployeeById(int employee_id)
         {
             return Ok(await _ISourceService.GetEmployeeById(employee_id));
         }
@@ -116,6 +116,12 @@ namespace LRProject.Controllers
         public async Task<ActionResult<Employee>> AddAdministration(int employee_id, int sg_id)
         {
             return Ok(await _ISourceService.AddAdministration(employee_id, sg_id));
+        }
+        [HttpGet]
+        [Route("getSourcesByGroup")]
+        public async Task<ActionResult<List<ReturnSourceDTO>>> GetSourcesByGroup(int group_id)
+        {
+            return Ok(await _ISourceService.GetSourcesByGroup(group_id));
         }
 
     }

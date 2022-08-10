@@ -17,6 +17,6 @@ namespace LRProject.Models
         public SourceGroup SourceGroup { get; set; }
         public int SourceGroupId { get; set; }
         [JsonIgnore]
-        public List<Employee> Employees { get; set; }
+        public List<Employee> Employees { get; set; } = new List<Employee>();
     }
 }

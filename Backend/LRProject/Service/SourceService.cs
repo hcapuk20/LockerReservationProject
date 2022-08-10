@@ -52,17 +52,31 @@ namespace LRProject.Service
             return await _context.SourceGroups.ToListAsync();
         }
 
-        public async Task<List<Employee>> AddEmployee(int employee_id, string name)
+        public async Task<List<Employee>> AddEmployee(int employee_id, string password, string name)
         {
-            Employee newEmployee = new Employee() { Id = employee_id, Name = name };
+            Employee newEmployee = new Employee() { Id = employee_id, Password = password, Name = name };
             _context.Employees.Add(newEmployee);
             await _context.SaveChangesAsync();
             return await _context.Employees.ToListAsync();
         }
 
-        public async Task<List<Employee>> GetAllEmployees()
+        public async Task<List<ReturnEmployeeDTO>> GetAllEmployees()
         {
-            return await _context.Employees.Include(c => c.Sources).Include(c => c.SourceGroups).ToListAsync();
+            var employees = await _context.Employees.ToListAsync();
+            List<ReturnEmployeeDTO> returnEmployees = new List<ReturnEmployeeDTO>();
+            foreach (var employee in employees)
+            {
+                var newEmpDTO = new ReturnEmployeeDTO()
+                {
+                    Id = employee.Id,
+                    Name = employee.Name,
+                    Sources = employee.Sources,
+                    SourceGroups = employee.SourceGroups
+                };
+                returnEmployees.Add(newEmpDTO);
+            }
+            return returnEmployees;
+
         }
 
         public async Task<Employee> AddRelationship(int employee_id, int source_id)
@@ -70,6 +84,7 @@ namespace LRProject.Service
             var employee = await _context.Employees.FindAsync(employee_id);
             var source = await _context.Sources.FindAsync(source_id);
             employee.Sources.Add(source);
+            source.Employees.Add(employee);
 
             await _context.SaveChangesAsync();
             return employee;
@@ -103,10 +118,17 @@ namespace LRProject.Service
             return await _context.SourceGroups.ToListAsync();
         }
 
-        public async Task<Employee> GetEmployeeById(int employee_id)
+        public async Task<ReturnEmployeeDTO> GetEmployeeById(int employee_id)
         {
             var employee = await _context.Employees.FindAsync(employee_id);
-            return employee;
+            var newEmpDTO = new ReturnEmployeeDTO()
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Sources = employee.Sources,
+                SourceGroups = employee.SourceGroups
+            };
+            return newEmpDTO;
         }
 
         public async Task<Employee> RemoveRelationship(int employee_id, int source_id)
@@ -134,6 +156,36 @@ namespace LRProject.Service
 
             await _context.SaveChangesAsync();
             return employee;
+        }
+
+        public async Task<List<ReturnSourceDTO>> GetSourcesByGroup(int source_id)
+        {
+            var sources = _context.SourceGroups.Where(x => x.Id == source_id).SelectMany(e => e.Sources);
+            var sourcesDTO = new List<ReturnSourceDTO>();
+            foreach (var source in sources)
+            {
+                var newSourceDTO = new ReturnSourceDTO()
+                {
+                    Id = source.Id,
+                    SourceGroupId = source.SourceGroupId,
+                };
+                if (source.Employees.Count > 0)
+                {
+                    foreach (var employee in source.Employees)
+                    {
+                        var newEmpDTO = new ReturnEmployeeDTO()
+                        {
+                            Id = employee.Id,
+                            Name = employee.Name,
+                            Sources = employee.Sources,
+                            SourceGroups = employee.SourceGroups
+                        };
+                        newSourceDTO.Employees.Add(newEmpDTO);
+                    }
+                }
+                sourcesDTO.Add(newSourceDTO);
+            }
+            return sourcesDTO;
         }
     }
 }
