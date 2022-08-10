@@ -18,5 +18,6 @@ namespace LRProject.Models
         public int SourceGroupId { get; set; }
         [JsonIgnore]
         public List<Employee> Employees { get; set; } = new List<Employee>();
+        public int Space { get; set; }
     }
 }

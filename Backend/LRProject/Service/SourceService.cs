@@ -19,6 +19,8 @@ namespace LRProject.Service
         public async Task<List<Source>> AddSource(int source_id, int source_group_id)
         {
             var newSource = new Source() { Id = source_id, SourceGroupId = source_group_id };
+            int capacity = _context.SourceGroups.FirstOrDefault(s => s.Id == source_group_id).Capacity;
+            newSource.Space = capacity;
             //var SG = await _context.SourceGroups.FindAsync(source_group_id);
             _context.Sources.Add(newSource);
             //SG.Sources.Add(newSource);
@@ -83,6 +85,15 @@ namespace LRProject.Service
         {
             var employee = await _context.Employees.FindAsync(employee_id);
             var source = await _context.Sources.FindAsync(source_id);
+            if (employee == null || source == null)
+            {
+                return null;
+            }
+            if (source.Space == 0)
+            {
+                return null;
+            }
+            source.Space--;
             employee.Sources.Add(source);
             source.Employees.Add(employee);
 
@@ -140,6 +151,7 @@ namespace LRProject.Service
             {
                 foreach (var source in employee.Sources.Where(s => s.Id == source_id).ToList())
                 {
+                    source.Space++;
                     employee.Sources.Remove(source);
                 }
             }

@@ -10,5 +10,7 @@ namespace LRProject.Models
         public int Id { get; set; }
         public int SourceGroupId { get; set; }
         public List<ReturnEmployeeDTO> Employees { get; set; } = new List<ReturnEmployeeDTO>();
+
+        public int Space { get; set; }
     }
 }
