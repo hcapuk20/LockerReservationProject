@@ -23,7 +23,7 @@ namespace LRProject.Service
         Task<List<SourceGroup>> RemoveSourceGroup(int sg_id);
         Task<Employee> RemoveRelationship(int employee_id, int source_id);
         Task<Employee> AddAdministration(int employee_id, int sg_id);
-        Task<List<ReturnSourceDTO>> GetSourcesByGroup(int source_id);
+        Task<List<GetSourcesByGroupDTO>> GetSourcesByGroup(int source_id);
         Task<List<Employee>> UpdateEmployee(UpdateEmployeeDTO request);
         Task<List<SourceGroup>> UpdateSourceGroup(int sg_id, int employee_id);
         Task<Employee> UpdateRelationship(int employee_id, int source_id, int new_source_id);

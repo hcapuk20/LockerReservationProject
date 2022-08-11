@@ -119,7 +119,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getSourcesByGroup")]
-        public async Task<ActionResult<List<ReturnSourceDTO>>> GetSourcesByGroup(int group_id)
+        public async Task<ActionResult<List<GetSourcesByGroupDTO>>> GetSourcesByGroup(int group_id)
         {
             return Ok(await _ISourceService.GetSourcesByGroup(group_id));
         }

@@ -64,7 +64,7 @@ namespace LRProject.Service
 
         public async Task<List<ReturnEmployeeDTO>> GetAllEmployees()
         {
-            var employees = await _context.Employees.ToListAsync();
+            var employees = await _context.Employees.Include(e => e.Sources).Include(e => e.SourceGroups).ToListAsync();
             List<ReturnEmployeeDTO> returnEmployees = new List<ReturnEmployeeDTO>();
             foreach (var employee in employees)
             {
@@ -170,27 +170,26 @@ namespace LRProject.Service
             return employee;
         }
 
-        public async Task<List<ReturnSourceDTO>> GetSourcesByGroup(int source_id)
+        public async Task<List<GetSourcesByGroupDTO>> GetSourcesByGroup(int source_id)
         {
-            var sources = _context.SourceGroups.Where(x => x.Id == source_id).SelectMany(e => e.Sources);
-            var sourcesDTO = new List<ReturnSourceDTO>();
+            var sources = _context.SourceGroups.Where(x => x.Id == source_id).SelectMany(e => e.Sources).Include(s => s.Employees);
+            var sourcesDTO = new List<GetSourcesByGroupDTO>();
             foreach (var source in sources)
             {
-                var newSourceDTO = new ReturnSourceDTO()
+                var newSourceDTO = new GetSourcesByGroupDTO()
                 {
                     Id = source.Id,
                     SourceGroupId = source.SourceGroupId,
+                    Space = source.Space,
                 };
                 if (source.Employees.Count > 0)
                 {
                     foreach (var employee in source.Employees)
                     {
-                        var newEmpDTO = new ReturnEmployeeDTO()
+                        var newEmpDTO = new EmpDTOIdName()
                         {
                             Id = employee.Id,
                             Name = employee.Name,
-                            Sources = employee.Sources,
-                            SourceGroups = employee.SourceGroups
                         };
                         newSourceDTO.Employees.Add(newEmpDTO);
                     }
@@ -245,8 +244,6 @@ namespace LRProject.Service
             AddRelationship(employee.Id, newSource.Id);
             await _context.SaveChangesAsync();
             return employee;
-
-
         }
     }
 }
