@@ -199,5 +199,54 @@ namespace LRProject.Service
             }
             return sourcesDTO;
         }
+
+        public async Task<List<Employee>> UpdateEmployee(UpdateEmployeeDTO request)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.Id == request.Id);
+            if (employee == null)
+            {
+                return null;
+            }
+            employee.Name = request.Name;
+            await _context.SaveChangesAsync();
+            return await _context.Employees.ToListAsync();
+        }
+
+        public async Task<List<SourceGroup>> UpdateSourceGroup(int sg_id, int employee_id)
+        {
+
+            var sg = _context.SourceGroups.FirstOrDefault(s => s.Id == sg_id);
+            var employee = _context.Employees.Include(e => e.SourceGroups).SingleOrDefault(e => e.Id == employee_id);
+
+            if (sg == null || employee == null)
+            {
+                return null;
+            }
+            foreach (var sourceGroup in employee.SourceGroups.Where(s => s.Id == sg_id).ToList())
+            {
+
+                employee.SourceGroups.Remove(sourceGroup);
+            }
+            await _context.SaveChangesAsync();
+            return await _context.SourceGroups.ToListAsync();
+        }
+
+        public async Task<Employee> UpdateRelationship(int employee_id, int source_id, int new_source_id)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.Id == employee_id);
+            var source = _context.Sources.FirstOrDefault(s => s.Id == source_id);
+            var newSource = _context.Sources.FirstOrDefault(s => s.Id == new_source_id);
+
+            if (employee == null || source == null || newSource == null)
+            {
+                return null;
+            }
+            RemoveRelationship(employee.Id, source.Id);
+            AddRelationship(employee.Id, newSource.Id);
+            await _context.SaveChangesAsync();
+            return employee;
+
+
+        }
     }
 }

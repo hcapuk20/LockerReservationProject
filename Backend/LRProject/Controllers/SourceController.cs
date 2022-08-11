@@ -123,6 +123,24 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.GetSourcesByGroup(group_id));
         }
+        [HttpPut]
+        [Route("updateEmployee")]
+        public async Task<ActionResult<List<Employee>>> UpdateEmployee(UpdateEmployeeDTO request)
+        {
+            return Ok(await _ISourceService.UpdateEmployee(request));
+        }
+        [HttpPut]
+        [Route("updateSourceGroup")]
+        public async Task<ActionResult<List<SourceGroup>>> UpdateSourceGroup(int sg_id, int emp_id)
+        {
+            return Ok(await _ISourceService.UpdateSourceGroup(sg_id, emp_id));
+        }
+        [HttpPut]
+        [Route("updateRelationship")]
+        public async Task<ActionResult<Employee>> UpdateRelationship(int emp_id, int source_id, int new_source_id)
+        {
+            return Ok(await _ISourceService.UpdateRelationship(emp_id, source_id, new_source_id));
+        }
 
     }
 }
