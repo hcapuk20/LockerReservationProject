@@ -166,7 +166,12 @@ namespace LRProject.Service
             }
             if (source.Space == 0)
             {
-                return null;
+                return new Response<Employee>()
+                {
+                    Data = null,
+                    StatusCode = 404,
+                    Message = "This source is not available."
+                };
             }
             source.Space--;
             employee.Sources.Add(source);
