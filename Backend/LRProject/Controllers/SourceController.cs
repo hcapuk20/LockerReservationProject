@@ -23,121 +23,121 @@ namespace LRProject.Controllers
 
         [HttpGet]
         [Route("getAllEmployees")]
-        public async Task<ActionResult<List<ReturnEmployeeDTO>>> GetAllEmployees()
+        public async Task<ActionResult<Response<List<ReturnEmployeeDTO>>>> GetAllEmployees()
         {
             return Ok(await _ISourceService.GetAllEmployees());
         }
         [HttpGet]
         [Route("getAllSources")]
-        public async Task<ActionResult<List<Source>>> GetAllSources()
+        public async Task<ActionResult<Response<List<Source>>>> GetAllSources()
         {
             return Ok(await _ISourceService.GetAllSources());
         }
 
         [HttpPost]
         [Route("addEmployee")]
-        public async Task<ActionResult<List<Employee>>> AddEmployee(int employee_id, string password, string name)
+        public async Task<ActionResult<Response<List<Employee>>>> AddEmployee(int employee_id, string password, string name)
         {
             return Ok(await _ISourceService.AddEmployee(employee_id, password, name));
         }
 
         [HttpPost]
         [Route("addSource")]
-        public async Task<ActionResult<List<Source>>> AddSource(int id, int sg_id)
+        public async Task<ActionResult<Response<List<Source>>>> AddSource(int id, int sg_id)
         {
             return Ok(await _ISourceService.AddSource(id, sg_id));
         }
 
         [HttpDelete]
         [Route("removeSource")]
-        public async Task<ActionResult<List<Source>>> RemoveSource(int source_id)
+        public async Task<ActionResult<Response<List<Source>>>> RemoveSource(int source_id)
         {
             return Ok(await _ISourceService.RemoveSource(source_id));
         }
 
         [HttpGet]
         [Route("getAllSourceGroups")]
-        public async Task<ActionResult<List<SourceGroup>>> GetAllSourceGroups()
+        public async Task<ActionResult<Response<List<SourceGroup>>>> GetAllSourceGroups()
         {
             return Ok(await _ISourceService.GetAllSourceGroups());
         }
 
         [HttpPost]
         [Route("addSourceGroup")]
-        public async Task<ActionResult<List<SourceGroup>>> AddSourceGroup(int sourceGroup_id, string name, int cap)
+        public async Task<ActionResult<Response<List<SourceGroup>>>> AddSourceGroup(int sourceGroup_id, string name, int cap)
         {
             return Ok(await _ISourceService.AddSourceGroup(sourceGroup_id, name, cap));
         }
 
         [HttpPost]
         [Route("addRelationship")]
-        public async Task<ActionResult<Employee>> AddRelationship(int employee_id, int source_id)
+        public async Task<ActionResult<Response<Employee>>> AddRelationship(int employee_id, int source_id)
         {
             return Ok(await _ISourceService.AddRelationship(employee_id, source_id));
         }
         [HttpGet]
         [Route("getSourcesOfEmployee")]
-        public async Task<ActionResult<List<Source>>> GetSourcesOfEmployee(int employee_id)
+        public async Task<ActionResult<Response<List<Source>>>> GetSourcesOfEmployee(int employee_id)
         {
             return Ok(await _ISourceService.GetSourcesOfEmployee(employee_id));
         }
         [HttpGet]
         [Route("getOwnersOfSource")]
-        public async Task<ActionResult<List<Employee>>> GetOwnersOfSource(int source_id)
+        public async Task<ActionResult<Response<List<Employee>>>> GetOwnersOfSource(int source_id)
         {
             return Ok(await _ISourceService.GetOwnersOfSource(source_id));
         }
         [HttpDelete]
         [Route("removeEmployee")]
-        public async Task<ActionResult<List<Employee>>> RemoveEmployee(int employee_id)
+        public async Task<ActionResult<Response<List<Employee>>>> RemoveEmployee(int employee_id)
         {
             return Ok(await _ISourceService.RemoveEmployee(employee_id));
         }
         [HttpDelete]
         [Route("removeSourceGroup")]
-        public async Task<ActionResult<List<SourceGroup>>> RemoveSourceGroup(int source_group_id)
+        public async Task<ActionResult<Response<List<SourceGroup>>>> RemoveSourceGroup(int source_group_id)
         {
             return Ok(await _ISourceService.RemoveSourceGroup(source_group_id));
         }
         [HttpGet]
         [Route("getEmployeeById")]
-        public async Task<ActionResult<ReturnEmployeeDTO>> GetEmployeeById(int employee_id)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> GetEmployeeById(int employee_id)
         {
             return Ok(await _ISourceService.GetEmployeeById(employee_id));
         }
         [HttpDelete]
         [Route("removeRelationship")]
-        public async Task<ActionResult<Employee>> RemoveRelationship(int employee_id, int source_id)
+        public async Task<ActionResult<Response<Employee>>> RemoveRelationship(int employee_id, int source_id)
         {
             return Ok(await _ISourceService.RemoveRelationship(employee_id, source_id));
         }
         [HttpPost]
         [Route("addAdministration")]
-        public async Task<ActionResult<Employee>> AddAdministration(int employee_id, int sg_id)
+        public async Task<ActionResult<Response<Employee>>> AddAdministration(int employee_id, int sg_id)
         {
             return Ok(await _ISourceService.AddAdministration(employee_id, sg_id));
         }
         [HttpGet]
         [Route("getSourcesByGroup")]
-        public async Task<ActionResult<List<GetSourcesByGroupDTO>>> GetSourcesByGroup(int group_id)
+        public async Task<ActionResult<Response<List<GetSourcesByGroupDTO>>>> GetSourcesByGroup(int group_id)
         {
             return Ok(await _ISourceService.GetSourcesByGroup(group_id));
         }
         [HttpPut]
         [Route("updateEmployee")]
-        public async Task<ActionResult<List<Employee>>> UpdateEmployee(UpdateEmployeeDTO request)
+        public async Task<ActionResult<Response<List<Employee>>>> UpdateEmployee(UpdateEmployeeDTO request)
         {
             return Ok(await _ISourceService.UpdateEmployee(request));
         }
         [HttpPut]
         [Route("updateSourceGroup")]
-        public async Task<ActionResult<List<SourceGroup>>> UpdateSourceGroup(int sg_id, int emp_id)
+        public async Task<ActionResult<Response<List<SourceGroup>>>> UpdateSourceGroup(int sg_id, int former_id, int emp_id)
         {
-            return Ok(await _ISourceService.UpdateSourceGroup(sg_id, emp_id));
+            return Ok(await _ISourceService.UpdateSourceGroup(sg_id, former_id, emp_id));
         }
         [HttpPut]
         [Route("updateRelationship")]
-        public async Task<ActionResult<Employee>> UpdateRelationship(int emp_id, int source_id, int new_source_id)
+        public async Task<ActionResult<Response<Employee>>> UpdateRelationship(int emp_id, int source_id, int new_source_id)
         {
             return Ok(await _ISourceService.UpdateRelationship(emp_id, source_id, new_source_id));
         }
