@@ -36,9 +36,9 @@ namespace LRProject.Controllers
 
         [HttpPost]
         [Route("addEmployee")]
-        public async Task<ActionResult<Response<List<Employee>>>> AddEmployee(int employee_id, string password, string name)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddEmployee(int employee_id, string name, string password)
         {
-            return Ok(await _ISourceService.AddEmployee(employee_id, password, name));
+            return Ok(await _ISourceService.AddEmployee(employee_id, name, password));
         }
 
         [HttpPost]
@@ -71,7 +71,7 @@ namespace LRProject.Controllers
 
         [HttpPost]
         [Route("addRelationship")]
-        public async Task<ActionResult<Response<Employee>>> AddRelationship(int employee_id, int source_id)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddRelationship(int employee_id, int source_id)
         {
             return Ok(await _ISourceService.AddRelationship(employee_id, source_id));
         }
@@ -83,13 +83,13 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getOwnersOfSource")]
-        public async Task<ActionResult<Response<List<Employee>>>> GetOwnersOfSource(int source_id)
+        public async Task<ActionResult<Response<List<EmpDTOIdName>>>> GetOwnersOfSource(int source_id)
         {
             return Ok(await _ISourceService.GetOwnersOfSource(source_id));
         }
         [HttpDelete]
         [Route("removeEmployee")]
-        public async Task<ActionResult<Response<List<Employee>>>> RemoveEmployee(int employee_id)
+        public async Task<ActionResult<Response<List<ReturnEmployeeDTO>>>> RemoveEmployee(int employee_id)
         {
             return Ok(await _ISourceService.RemoveEmployee(employee_id));
         }
@@ -107,13 +107,13 @@ namespace LRProject.Controllers
         }
         [HttpDelete]
         [Route("removeRelationship")]
-        public async Task<ActionResult<Response<Employee>>> RemoveRelationship(int employee_id, int source_id)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> RemoveRelationship(int employee_id, int source_id)
         {
             return Ok(await _ISourceService.RemoveRelationship(employee_id, source_id));
         }
         [HttpPost]
         [Route("addAdministration")]
-        public async Task<ActionResult<Response<Employee>>> AddAdministration(int employee_id, int sg_id)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddAdministration(int employee_id, int sg_id)
         {
             return Ok(await _ISourceService.AddAdministration(employee_id, sg_id));
         }
@@ -125,7 +125,7 @@ namespace LRProject.Controllers
         }
         [HttpPut]
         [Route("updateEmployee")]
-        public async Task<ActionResult<Response<List<Employee>>>> UpdateEmployee(UpdateEmployeeDTO request)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> UpdateEmployee(UpdateEmployeeDTO request)
         {
             return Ok(await _ISourceService.UpdateEmployee(request));
         }
@@ -137,9 +137,15 @@ namespace LRProject.Controllers
         }
         [HttpPut]
         [Route("updateRelationship")]
-        public async Task<ActionResult<Response<Employee>>> UpdateRelationship(int emp_id, int source_id, int new_source_id)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> UpdateRelationship(int emp_id, int source_id, int new_source_id)
         {
             return Ok(await _ISourceService.UpdateRelationship(emp_id, source_id, new_source_id));
+        }
+        [HttpPost]
+        [Route("addAutoRelationship")]
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddAutoRelationship(int emp_id, int sg_id)
+        {
+            return Ok(await _ISourceService.AddAutoRelationship(emp_id, sg_id));
         }
 
     }
