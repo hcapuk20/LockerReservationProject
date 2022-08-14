@@ -290,7 +290,7 @@ namespace LRProject.Service
 
         public async Task<Response<ReturnEmployeeDTO>> GetEmployeeById(int employee_id)
         {
-            var employee = await _context.Employees.FindAsync(employee_id);
+            var employee = _context.Employees.Include(e => e.Sources).Include(e => e.SourceGroups).FirstOrDefault(e => e.Id == employee_id);
             if (employee == null)
             {
                 return new Response<ReturnEmployeeDTO>()
