@@ -10,7 +10,7 @@ Type `cd ui` if you are not on the ui folder.
 Then type  `npm install` commmand in your terminal. This command should create a file called
 node_modules in your ui folder. It should also install all the third party dependencies in the package.json file.
 
-### running the code:
+# running the code:
 Go to ui folder again: `cd ui`.
 Type `npm start` in your terminal. This should start the project in your local host.
 You should see a login page in your browser.
