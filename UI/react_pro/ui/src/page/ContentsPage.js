@@ -14,10 +14,22 @@ function ContentsPage() {
     let arrayWithData = [];
 
     arrayWithData = location.state.arr;
-    const attrArray = Object.keys(arrayWithData[0]);
-    attrArray.push('actions');
+
+
     let stateArray = new Array(arrayWithData.length);
     stateArray.fill(false);
+
+
+    const [showInnerTable, setShowInnerTable] = useState(stateArray)
+    if (arrayWithData.length === 0) {
+        return (
+            <div>
+                <h1>no data found</h1>
+                <button onClick={()=>{navigate("/admin")}}> return back</button>
+            </div>);
+    }
+    const attrArray = Object.keys(arrayWithData[0]);
+    attrArray.push('actions');
 
 
     const [showInnerTable, setShowInnerTable] = useState(stateArray)
