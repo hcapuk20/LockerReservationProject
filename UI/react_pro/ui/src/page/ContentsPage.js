@@ -32,7 +32,6 @@ function ContentsPage() {
     attrArray.push('actions');
 
 
-    const [showInnerTable, setShowInnerTable] = useState(stateArray)
 
     function showContent(change_index) {
         console.log(change_index)
