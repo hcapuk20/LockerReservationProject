@@ -2,7 +2,8 @@
 import classes from './Form.module.css'
 import useAuth from '../auth/useAuth';
 //import axios from '../api/axios'
-import {  useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from '../api/axios';
 //Link
 //const LOGIN_URL = '/auth';
 
@@ -10,11 +11,11 @@ import {  useNavigate, useLocation } from 'react-router-dom';
 const React = require("react")
 function Form() {
 
+
+
     const [formData, setFormData] = React.useState({ firstName: "", passWord: "" });  //değiştir! - bak 
     const [errorMessage, setErrorMessage] = React.useState(false);
-    const {setAuth} = useAuth();
-
-
+    const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -30,10 +31,6 @@ function Form() {
 
     function HandleInput(event) {
         const { name, value } = event.target
-        console.log("name:")
-        console.log(name)
-        console.log("value:")
-        console.log(value)
         setFormData((prevData) => {
             return {
                 ...prevData,
@@ -42,19 +39,34 @@ function Form() {
 
         })
     }
+    async function getAdminGroups(first) {
+        const response = await axios.get(`https://localhost:7125/api/Source/getEmployeeById?employee_id=${first}`);
+        console.log(response)
+        return (response?.data?.data);  //////burası nullsa error veriyor düzelt
+
+    }
 
     function HandleSubmit(event) {
 
         event.preventDefault();
         try {
-            //const response = await axios.post(LOGIN_URL,JSON.stringify(formData.firstName,formData.passWord))
-             const first =formData.firstName
-             const second =formData.passWord
-            //setAuth({first,second})
-            console.log(first)
-            setAuth({firstName: first, password :second});
-            console.log(from)
-            navigate(from, {replace : true} );
+
+            const first = formData.firstName
+            const second = formData.passWord
+
+            getAdminGroups(first)
+                .then((result) => {
+                    setAuth({ firstName: first, password: second, user: result });
+
+                    (from !== "/nonadmin" && from !== "/admin" && from !== "/navigationpage") ?
+                        navigate('/navigationpage') :
+                        navigate(from, { replace: true });
+                }
+                )
+
+
+
+
         } catch (error) {
             console.log(error)
             setErrorMessage(true)

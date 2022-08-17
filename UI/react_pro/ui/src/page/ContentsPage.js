@@ -2,32 +2,43 @@
 //import useAuth from "../auth/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import classes from './ContentsPage.module.css'
-
+import InnerTable from "../components/InnerTable";
+import { useState } from "react";
 
 function ContentsPage() {
     const location = useLocation();
     const navigate = useNavigate();
+
     // const navigate = useNavigate();
     //  const from = location.state?.from?.pathname || "/navigationpage";
     let arrayWithData = [];
+
     arrayWithData = location.state.arr;
-    let buttonSourceGroup = location.state.buttonSourceGroup;
     const attrArray = Object.keys(arrayWithData[0]);
+    attrArray.push('actions');
+    let stateArray = new Array(arrayWithData.length);
+    stateArray.fill(false);
 
 
+    const [showInnerTable, setShowInnerTable] = useState(stateArray)
 
-    function findAttributes(item) {
+    function showContent(change_index) {
+        console.log(change_index)
+        const newState = showInnerTable.map((value, index) => {
+            if (index === change_index) {
+                console.log("changed")
+                return (!value);
+            }
+            return value;
+        });
+        setShowInnerTable(newState);
+    }
+
+    function findAttributes(item) {   //buraları değiştir
+
         const attr = []
         for (const [, value] of Object.entries(item)) {
-            if(Array.isArray(value)){
-                attr.push("[")
-                value.forEach(element => {
-                    attr.push(element)
-                });
-                attr.push("]")
-            }else{
             attr.push(value)
-            }
         }
         return (attr.map(item => {
             return (<td>{item}</td>)
@@ -38,30 +49,45 @@ function ContentsPage() {
     return (
         <div>
             <table className={classes.table}>
-                <thead>
-                    <tr>
-                        {attrArray.map(item => {
+                <thead >
+                    <tr >
+                        {attrArray.map((item, index) => {
                             return (
-                                <td>{item}</td>
+                                <th key={index} >{item}</th>
                             );
                         })}
                     </tr>
                 </thead>
                 <tbody>
-                    {arrayWithData.map(item => {
+                    {arrayWithData.map((item, index) => {
                         return (
-                            <tr key={item.employee_id}>
+                            <div>
+                                <tr>
+                                    <td key={item.id}>
+                                        {//key kısmını değiştir!
+                                            findAttributes(item)
+                                        }
+                                    </td>
+                                    <td>
+                                        <button onClick={() => showContent(index)} >show content</button>
+                                    </td>
+                                </tr>
                                 {
-                                    findAttributes(item)
+                                    (showInnerTable[index]) &&
+                                    (<div style={{ position: 'relative', left: '30px'  }}>
+                                        <InnerTable item_id={item.id} />
+                                    </div>)
                                 }
-                            </tr>
+                            </div>
+
                         );
                     })}
+
+
                 </tbody>
 
             </table>
             <br />
-            <button onClick={() => { navigate("/editpage", { state: { arr: attrArray ,buttonSourceGroup :buttonSourceGroup} }); }}  >   edit source group  </button>
             <button onClick={() => { navigate("/admin"); }}  >  return to admin page </button>
             <br />
 
