@@ -33,6 +33,8 @@ function NavigationPage(){
             <Link to="/nonadmin">Check your sources</Link>
             <br />
             <br />
+            <Link to="/dbmanager">Manage database</Link>
+            <br />
             <br />
             <div >
                 <button onClick={logout}>Sign Out</button>
