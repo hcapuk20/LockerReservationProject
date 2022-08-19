@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LRProject.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220810182855_addedSourceSpace")]
-    partial class addedSourceSpace
+    [Migration("20220817164609_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,36 +23,6 @@ namespace LRProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("EmployeeSource", b =>
-                {
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SourcesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeesId", "SourcesId");
-
-                    b.HasIndex("SourcesId");
-
-                    b.ToTable("EmployeeSource");
-                });
-
-            modelBuilder.Entity("EmployeeSourceGroup", b =>
-                {
-                    b.Property<int>("EmployeesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SourceGroupsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeesId", "SourceGroupsId");
-
-                    b.HasIndex("SourceGroupsId");
-
-                    b.ToTable("EmployeeSourceGroup");
-                });
 
             modelBuilder.Entity("LRProject.Models.Employee", b =>
                 {
@@ -70,6 +40,36 @@ namespace LRProject.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("LRProject.Models.EmployeeSource", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeId", "SourceId");
+
+                    b.HasIndex("SourceId");
+
+                    b.ToTable("EmployeeSources");
+                });
+
+            modelBuilder.Entity("LRProject.Models.EmployeeSourceGroup", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SourceGroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeId", "SourceGroupId");
+
+                    b.HasIndex("SourceGroupId");
+
+                    b.ToTable("EmployeeSourcesGroups");
                 });
 
             modelBuilder.Entity("LRProject.Models.Source", b =>
@@ -107,34 +107,42 @@ namespace LRProject.Migrations
                     b.ToTable("SourceGroups");
                 });
 
-            modelBuilder.Entity("EmployeeSource", b =>
+            modelBuilder.Entity("LRProject.Models.EmployeeSource", b =>
                 {
-                    b.HasOne("LRProject.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeesId")
+                    b.HasOne("LRProject.Models.Employee", "Employee")
+                        .WithMany("EmployeeSources")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LRProject.Models.Source", null)
-                        .WithMany()
-                        .HasForeignKey("SourcesId")
+                    b.HasOne("LRProject.Models.Source", "Source")
+                        .WithMany("EmployeeSources")
+                        .HasForeignKey("SourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Source");
                 });
 
-            modelBuilder.Entity("EmployeeSourceGroup", b =>
+            modelBuilder.Entity("LRProject.Models.EmployeeSourceGroup", b =>
                 {
-                    b.HasOne("LRProject.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeesId")
+                    b.HasOne("LRProject.Models.Employee", "Employee")
+                        .WithMany("EmployeeSourceGroups")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LRProject.Models.SourceGroup", null)
-                        .WithMany()
-                        .HasForeignKey("SourceGroupsId")
+                    b.HasOne("LRProject.Models.SourceGroup", "SourceGroup")
+                        .WithMany("EmployeeSourceGroups")
+                        .HasForeignKey("SourceGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("SourceGroup");
                 });
 
             modelBuilder.Entity("LRProject.Models.Source", b =>
@@ -148,8 +156,22 @@ namespace LRProject.Migrations
                     b.Navigation("SourceGroup");
                 });
 
+            modelBuilder.Entity("LRProject.Models.Employee", b =>
+                {
+                    b.Navigation("EmployeeSourceGroups");
+
+                    b.Navigation("EmployeeSources");
+                });
+
+            modelBuilder.Entity("LRProject.Models.Source", b =>
+                {
+                    b.Navigation("EmployeeSources");
+                });
+
             modelBuilder.Entity("LRProject.Models.SourceGroup", b =>
                 {
+                    b.Navigation("EmployeeSourceGroups");
+
                     b.Navigation("Sources");
                 });
 #pragma warning restore 612, 618

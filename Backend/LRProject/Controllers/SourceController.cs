@@ -21,6 +21,7 @@ namespace LRProject.Controllers
 
         }
 
+
         [HttpGet]
         [Route("getAllEmployees")]
         public async Task<ActionResult<Response<List<ReturnEmployeeDTO>>>> GetAllEmployees()
@@ -28,46 +29,66 @@ namespace LRProject.Controllers
             return Ok(await _ISourceService.GetAllEmployees());
         }
         [HttpGet]
-        [Route("getAllSources")]
-        public async Task<ActionResult<Response<List<Source>>>> GetAllSources()
+        [Route("getEmployeeById")]
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> GetEmployeeById(int employee_id)
         {
-            return Ok(await _ISourceService.GetAllSources());
+            return Ok(await _ISourceService.GetEmployeeById(employee_id));
         }
-
         [HttpPost]
         [Route("addEmployee")]
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddEmployee(int employee_id, string name, string password)
         {
             return Ok(await _ISourceService.AddEmployee(employee_id, name, password));
         }
-
+        [HttpDelete]
+        [Route("removeEmployee")]
+        public async Task<ActionResult<Response<List<ReturnEmployeeDTO>>>> RemoveEmployee(int employee_id)
+        {
+            return Ok(await _ISourceService.RemoveEmployee(employee_id));
+        }
+        [HttpGet]
+        [Route("getAllSources")]
+        public async Task<ActionResult<Response<List<Source>>>> GetAllSources()
+        {
+            return Ok(await _ISourceService.GetAllSources());
+        }
+        [HttpGet]
+        [Route("getSourcesByGroup")]
+        public async Task<ActionResult<Response<List<GetSourcesByGroupDTO>>>> GetSourcesByGroup(int group_id)
+        {
+            return Ok(await _ISourceService.GetSourcesByGroup(group_id));
+        }
         [HttpPost]
         [Route("addSource")]
         public async Task<ActionResult<Response<List<Source>>>> AddSource(int id, int sg_id)
         {
             return Ok(await _ISourceService.AddSource(id, sg_id));
         }
-
         [HttpDelete]
         [Route("removeSource")]
         public async Task<ActionResult<Response<List<Source>>>> RemoveSource(int source_id)
         {
             return Ok(await _ISourceService.RemoveSource(source_id));
         }
-
         [HttpGet]
         [Route("getAllSourceGroups")]
         public async Task<ActionResult<Response<List<SourceGroup>>>> GetAllSourceGroups()
         {
             return Ok(await _ISourceService.GetAllSourceGroups());
         }
-
         [HttpPost]
         [Route("addSourceGroup")]
         public async Task<ActionResult<Response<List<SourceGroup>>>> AddSourceGroup(int sourceGroup_id, string name, int cap)
         {
             return Ok(await _ISourceService.AddSourceGroup(sourceGroup_id, name, cap));
         }
+        [HttpDelete]
+        [Route("removeSourceGroup")]
+        public async Task<ActionResult<Response<List<SourceGroup>>>> RemoveSourceGroup(int source_group_id)
+        {
+            return Ok(await _ISourceService.RemoveSourceGroup(source_group_id));
+        }
+
 
         [HttpPost]
         [Route("addRelationship")]
@@ -87,24 +108,9 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.GetOwnersOfSource(source_id));
         }
-        [HttpDelete]
-        [Route("removeEmployee")]
-        public async Task<ActionResult<Response<List<ReturnEmployeeDTO>>>> RemoveEmployee(int employee_id)
-        {
-            return Ok(await _ISourceService.RemoveEmployee(employee_id));
-        }
-        [HttpDelete]
-        [Route("removeSourceGroup")]
-        public async Task<ActionResult<Response<List<SourceGroup>>>> RemoveSourceGroup(int source_group_id)
-        {
-            return Ok(await _ISourceService.RemoveSourceGroup(source_group_id));
-        }
-        [HttpGet]
-        [Route("getEmployeeById")]
-        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> GetEmployeeById(int employee_id)
-        {
-            return Ok(await _ISourceService.GetEmployeeById(employee_id));
-        }
+
+
+
         [HttpDelete]
         [Route("removeRelationship")]
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> RemoveRelationship(int employee_id, int source_id)
@@ -117,12 +123,7 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.AddAdministration(employee_id, sg_id));
         }
-        [HttpGet]
-        [Route("getSourcesByGroup")]
-        public async Task<ActionResult<Response<List<GetSourcesByGroupDTO>>>> GetSourcesByGroup(int group_id)
-        {
-            return Ok(await _ISourceService.GetSourcesByGroup(group_id));
-        }
+
         [HttpPut]
         [Route("updateEmployee")]
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> UpdateEmployee(UpdateEmployeeDTO request)
@@ -141,12 +142,18 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.UpdateRelationship(emp_id, source_id, new_source_id));
         }
-        [HttpPost]
-        [Route("addAutoRelationship")]
-        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddAutoRelationship(int emp_id, int sg_id)
+        [HttpGet]
+        [Route("login")]
+        public async Task<ActionResult<Response<int>>> Login(int user_id)
         {
-            return Ok(await _ISourceService.AddAutoRelationship(emp_id, sg_id));
+            return Ok(await _ISourceService.Login(user_id));
         }
+        // [HttpPost]
+        // [Route("addAutoRelationship")]
+        // public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddAutoRelationship(int emp_id, int sg_id)
+        // {
+        //     return Ok(await _ISourceService.AddAutoRelationship(emp_id, sg_id));
+        // }
 
     }
 }

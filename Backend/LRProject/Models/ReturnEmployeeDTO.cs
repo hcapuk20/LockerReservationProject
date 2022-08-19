@@ -9,7 +9,7 @@ namespace LRProject.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Source> Sources { get; set; } = new List<Source>();
-        public virtual List<SourceGroup> SourceGroups { get; set; } = new List<SourceGroup>();
+        public List<ReturnSourceDTO> Sources { get; set; } = new List<ReturnSourceDTO>();
+        public virtual List<EmployeeSourceGroup> SourceGroups { get; set; } = new List<EmployeeSourceGroup>();
     }
 }

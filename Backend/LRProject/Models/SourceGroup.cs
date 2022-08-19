@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace LRProject.Models
 {
-    public class SourceGroup
+    public class SourceGroup : PartiallyAuditable
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int Capacity { get; set; }
+        // associated sources
         public List<Source> Sources { get; set; } = new List<Source>();
         // admins
-        [JsonIgnore]
-        public virtual List<Employee> Employees { get; set; } = new List<Employee>();
+        public List<EmployeeSourceGroup> EmployeeSourceGroups { get; set; } = new List<EmployeeSourceGroup>();
     }
 }

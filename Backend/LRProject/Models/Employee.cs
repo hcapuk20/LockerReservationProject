@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace LRProject.Models
 {
-    public class Employee
+    public class Employee : PartiallyAuditable
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int Id { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
-        public List<Source> Sources { get; set; } = new List<Source>();
+        public List<EmployeeSource> EmployeeSources { get; set; } = new List<EmployeeSource>();
         // source groups that can be manipulated by this user (Administration)
-        public virtual List<SourceGroup> SourceGroups { get; set; } = new List<SourceGroup>();
+        public List<EmployeeSourceGroup> EmployeeSourceGroups { get; set; } = new List<EmployeeSourceGroup>();
 
     }
 }

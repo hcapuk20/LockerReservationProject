@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LRProject.Models
 {
-    public class Source
+    public class Source : PartiallyAuditable
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
@@ -16,8 +16,7 @@ namespace LRProject.Models
         [JsonIgnore]
         public SourceGroup SourceGroup { get; set; }
         public int SourceGroupId { get; set; }
-        [JsonIgnore]
-        public List<Employee> Employees { get; set; } = new List<Employee>();
+        public List<EmployeeSource> EmployeeSources { get; set; } = new List<EmployeeSource>();
         public int Space { get; set; }
     }
 }

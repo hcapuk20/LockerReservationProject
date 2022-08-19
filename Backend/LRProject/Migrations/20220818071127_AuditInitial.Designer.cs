@@ -4,6 +4,7 @@ using LRProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LRProject.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220818071127_AuditInitial")]
+    partial class AuditInitial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,27 +63,6 @@ namespace LRProject.Migrations
                     b.Property<int>("SourceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CreatedByUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateDeleted")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("DeletedByUser")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UpdatedByUser")
-                        .HasColumnType("int");
-
                     b.HasKey("EmployeeId", "SourceId");
 
                     b.HasIndex("SourceId");
@@ -96,27 +78,6 @@ namespace LRProject.Migrations
                     b.Property<int>("SourceGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CreatedByUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateDeleted")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("DeletedByUser")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UpdatedByUser")
-                        .HasColumnType("int");
-
                     b.HasKey("EmployeeId", "SourceGroupId");
 
                     b.HasIndex("SourceGroupId");
@@ -129,22 +90,10 @@ namespace LRProject.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateDeleted")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<int>("SourceGroupId")
                         .HasColumnType("int");
 
                     b.Property<int>("Space")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -162,21 +111,9 @@ namespace LRProject.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateDeleted")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
