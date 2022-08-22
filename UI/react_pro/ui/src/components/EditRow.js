@@ -1,25 +1,29 @@
 
 
-import axios from '../api/axios'
+import axios from '../api/axios';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 const React = require("react")
 
 
 ////inputlara type check yapman lazım!!!
 
-function EditRow({source_id, renderMethod }) {
+function EditRow({ source_id, renderMethod }) {
 
 
     let attributesArr = [];
-    attributesArr = ['id','name']
+    attributesArr = ['id', 'name']
 
     const obj = {};
 
     for (const key of attributesArr) {
-         obj[key] = " ";
+        obj[key] = " ";
     }
 
-    const [formData, setFormData] = React.useState({obj});  
-    const [message, setMessage] = React.useState(" ");  
+    const [formData, setFormData] = React.useState({ obj });
+    const [message, setMessage] = React.useState(" ");
 
 
 
@@ -43,26 +47,26 @@ function EditRow({source_id, renderMethod }) {
 
 
     async function handleDelete(event) {
-        event.preventDefault(); 
+        event.preventDefault();
         let response;
-        try{                            
-             response =   axios.delete( `https://localhost:7125/api/Source/removeRelationship?employee_id=${formData.id}&source_id=${source_id}`)
+        try {
+            response = axios.delete(`https://localhost:7125/api/Source/removeRelationship?employee_id=${formData.id}&source_id=${source_id}`)
             setMessage((await response).data.message)
-            renderMethod(render => !render);  
-        }catch(err){
+            renderMethod(render => !render);
+        } catch (err) {
             setMessage("error")
         }
     }
-    
 
-    async  function handleAdd(event) {
-        event.preventDefault(); 
+
+    async function handleAdd(event) {
+        event.preventDefault();
         let response;
-        try{
-             response =   axios.post( `https://localhost:7125/api/Source/addRelationship?employee_id=${formData.id}&source_id=${source_id}`)
+        try {
+            response = axios.post(`https://localhost:7125/api/Source/addRelationship?employee_id=${formData.id}&source_id=${source_id}`)
             setMessage((await response).data.message)
             renderMethod(render => !render);
-        }catch(err){
+        } catch (err) {
             setMessage("error")
         }
     }
@@ -72,34 +76,53 @@ function EditRow({source_id, renderMethod }) {
     return (
         <div >
             <form>
-                {message === '' ? <div></div> : <div>{message}</div> }
+                {message === '' ? <div></div> :
+                    <Typography variant="h5" sx={{ margin: 2 }}>
+                        {message}
+                    </Typography>}
                 <br></br>
+                <Box sx={{
 
-                {
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}>
+                    {attributesArr.map((item, index) => {
 
-                
-                attributesArr.map((item ,index) => {
 
-                    
-                    return (
-                        <input
-                        type="text"
-                        placeholder={item}
-                        name={item}
-                        onChange={HandleInput}
-                        value={ formData[index]}
-                        key ={index} //bak
-                    />
-                    );
-                })}
+                        return (
 
+                            <TextField
+                                required
+                                size="small"
+                                type="text"
+                                sx={{ mt: 2, mb: 1 }}
+                                placeholder={item}
+                                name={item}
+                                onChange={HandleInput}
+                                value={formData[index]}
+                                key={index} //bak
+                            />
+                        );
+                    })}
+                </Box>
                 <br></br>
                 <br></br>
-                <button onClick={handleDelete}   >remove employee </button>
-                <button onClick={handleAdd}  >add employee </button>
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}>
+                    <Button size="small" variant="outlined" sx={{ margin: 1 }} onClick={handleDelete}   >
+                        remove employee
+                    </Button>
+                    <Button size="small" variant="outlined" sx={{ margin: 1 }} onClick={handleAdd}  >
+                        add employee
+                    </Button>
+                </Box>
             </form>
             <br></br>
-                <br></br>
+            <br></br>
         </div>
 
     );

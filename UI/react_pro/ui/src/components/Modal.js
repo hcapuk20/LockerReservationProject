@@ -1,36 +1,24 @@
 
-const MODAL_STYLES = {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#FFF',
-    padding: '300px',
-    zIndex: 1000
-}
+import Button from '@mui/material/Button';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
 
-const OVERLAY_STYLES = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, .7)',
-    zIndex: 1000
-}
+function Modal({ modalData, closeModal }) {
 
-
-
-function Modal({ modelData, closeModal }) {
-
-    function convertToString(value){
+    function convertToString(value) {
 
         if (value.length === 0) {
             return ('[]');
         }
 
-        if(typeof value[0]  !== 'object'){
-            
+        if (typeof value[0] !== 'object') {
+
             return (toString(value))
         }
 
@@ -41,55 +29,68 @@ function Modal({ modelData, closeModal }) {
 
     }
 
-    if (!modelData.openModal) {
+    if (!modalData.openModal) {
         return
     }
-    console.log(modelData.attributeKeys)
-    console.log("modelData.keys")
-    console.log(modelData.attributeData)
-    console.log("modelData.attributeData")
+    console.log(modalData.attributeKeys)
+
+
+
+
     return (
-        <>
-            <div style={OVERLAY_STYLES} onClick = {closeModal}/>
-            <div style={MODAL_STYLES}>
-                <h2>Returned Result:</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            {modelData.attributeKeys.map((item) => {
-                                return (<th>{item}</th>);
-                            })}
-                        </tr>
-                    </thead>
-                    <br></br>
-                    <tbody>
-                        {modelData.attributeData.map((item) => {
-                            console.log(Object.values(item))
+        <div>
 
-                            return (
-                                <tr>
-                                    {Object.values(item).map(( value) => {
-                                       if (!Array.isArray(value)){
-                                            return (<td>{value}</td>);
-                                        }else{
+<Dialog
+        open={modalData.openModal}
+        onClose={closeModal}
+        maxWidth="xl"
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+      >
+                <Typography variant="h2" gutterBottom >
+                    Returned Result:
+                </Typography>
+
+                <TableContainer>
+                    <Table aria-label="collapsible table">
+                        <TableHead>
+                            <TableRow>
+                                {modalData.attributeKeys.map((item) => {
+                                    return (<TableCell>{item}</TableCell>);
+                                })}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {modalData.attributeData.map((item) => {
+                                console.log(Object.values(item))
+
+                                return (
+                                    <TableRow>
+                                        {Object.values(item).map((value) => {
+                                            if (!Array.isArray(value)) {
+                                                return (<TableCell>{value}</TableCell>);
+                                            } else {
 
 
 
-                                            return (<td>{convertToString(value)}</td>);
-                                        }
+                                                return (<td>{convertToString(value)}</td>);
+                                            }
 
-                                    })}
-                                </tr>
-                            );
-                        })
+                                        })}
+                                    </TableRow>
+                                );
+                            })
 
-                        }
-                    </tbody>
-                </table>
+                            }
+                        </TableBody>
+                    </Table >
+                </TableContainer>
+                <Button variant="outlined" sx={{ width: 300, margin: 5 }} onClick={closeModal} >
+                    Close Modal
+                </Button>
 
-                <button onClick={closeModal}>close modal</button>
-            </div>
-        </>
+            </Dialog>
+        </div>
 
 
     );
