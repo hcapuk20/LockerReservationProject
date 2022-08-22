@@ -14,6 +14,7 @@ namespace LRProject.Models
         public int Id { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
+        public string Role { get; set; }
         public List<EmployeeSource> EmployeeSources { get; set; } = new List<EmployeeSource>();
         // source groups that can be manipulated by this user (Administration)
         public List<EmployeeSourceGroup> EmployeeSourceGroups { get; set; } = new List<EmployeeSourceGroup>();

@@ -101,10 +101,10 @@ namespace LRProject.Service
             };
             return response;
         }
-        public async Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string name, string password)
+        public async Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string name, string password, string role)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(x => x.Id == employee_id);
-            Employee newEmployee = new Employee() { Id = employee_id, Name = name, Password = password, Status = 1 };
+            Employee newEmployee = new Employee() { Id = employee_id, Name = name, Password = password, Role = role, Status = 1 };
             if (employee == null)
             {
                 _context.Add(newEmployee);
