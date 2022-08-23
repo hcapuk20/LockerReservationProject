@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LRProject.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LRProject.Controllers
 {
@@ -18,12 +19,21 @@ namespace LRProject.Controllers
     {
         public IConfiguration _config;
         private readonly DataContext _context;
+        private readonly IUserService _userService;
 
-        public TokenController(IConfiguration config, DataContext context)
+        public TokenController(IConfiguration config, DataContext context, IUserService userService)
         {
             _config = config;
             _context = context;
+            _userService = userService;
         }
+        [HttpGet]
+        public ActionResult<string> GetUserid()
+        {
+            var userid = _userService.GetMyId();
+            return Ok(userid);
+        }
+
 
         [HttpPost]
         [Route("createToken")]

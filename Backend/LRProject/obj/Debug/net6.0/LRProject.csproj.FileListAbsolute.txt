@@ -151,3 +151,5 @@ C:\Users\hakan\.netProjects\LRProject_Github\LockerReservationProject\Backend\LR
 C:\Users\hakan\.netProjects\LRProject_Github\LockerReservationProject\Backend\LRProject\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\hakan\.netProjects\LRProject_Github\LockerReservationProject\Backend\LRProject\bin\Debug\net6.0\Mono.TextTemplating.dll
 C:\Users\hakan\.netProjects\LRProject_Github\LockerReservationProject\Backend\LRProject\bin\Debug\net6.0\System.CodeDom.dll
+C:\Users\hakan\.netProjects\LRProject_Github\LockerReservationProject\Backend\LRProject\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\hakan\.netProjects\LRProject_Github\LockerReservationProject\Backend\LRProject\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

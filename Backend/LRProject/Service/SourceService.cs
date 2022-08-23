@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using LRProject.Data;
 using LRProject.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,43 +12,27 @@ namespace LRProject.Service
     public class SourceService : ISourceService
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
         private int _userid;
-        public SourceService(DataContext context)
+        public SourceService(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Response<List<ReturnEmployeeDTO>>> GetAllEmployees()
         {
             var employees = await _context.Employees.Where(e => e.Status == 1).ToListAsync();
 
-            List<ReturnEmployeeDTO> returnEmployees = new List<ReturnEmployeeDTO>();
-            foreach (var employee in employees)
+            List<ReturnEmployeeDTO> returnEmployees = _mapper.Map<List<ReturnEmployeeDTO>>(employees);
+            foreach (var employee in returnEmployees)
             {
-                var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == employee.Id && es.Status == 1).Select(e => e.Source).ToListAsync();
-
-                List<ReturnSourceDTO> sourceDTOs = new List<ReturnSourceDTO>();
-                foreach (var source in sources)
-                {
-                    if (source.Status == 1)
-                    {
-                        var sourceDTO = new ReturnSourceDTO()
-                        {
-                            Id = source.Id,
-                            SourceGroupId = source.SourceGroupId,
-                            Space = source.Space
-                        };
-                        sourceDTOs.Add(sourceDTO);
-                    }
-                }
-                var newEmpDTO = new ReturnEmployeeDTO()
-                {
-                    Id = employee.Id,
-                    Name = employee.Name,
-                    Sources = sourceDTOs,
-                    SourceGroups = employee.EmployeeSourceGroups
-                };
-                returnEmployees.Add(newEmpDTO);
+                var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == employee.Id && es.Status == 1).Select(es => es.Source).ToListAsync();
+                List<ReturnSourceDTO> sourceDTOs = _mapper.Map<List<ReturnSourceDTO>>(sources);
+                employee.Sources = sourceDTOs;
+                var sgs = await _context.EmployeeSourcesGroups.Where(es => es.EmployeeId == employee.Id && es.Status == 1).Select(es => es.SourceGroup).ToListAsync();
+                var sgDTOs = _mapper.Map<List<ReturnSourceGroupDTO>>(sgs);
+                employee.SourceGroups = sgDTOs;
             }
             var response = new Response<List<ReturnEmployeeDTO>>()
             {
@@ -72,27 +57,12 @@ namespace LRProject.Service
                 };
             }
             var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == employee.Id && es.Status == 1).Select(e => e.Source).ToListAsync();
-            List<ReturnSourceDTO> sourceDTOs = new List<ReturnSourceDTO>();
-            foreach (var source in sources)
-            {
-                if (source.Status == 1)
-                {
-                    var sourceDTO = new ReturnSourceDTO()
-                    {
-                        Id = source.Id,
-                        SourceGroupId = source.SourceGroupId,
-                        Space = source.Space
-                    };
-                    sourceDTOs.Add(sourceDTO);
-                }
-            }
-            var newEmpDTO = new ReturnEmployeeDTO()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-                Sources = sourceDTOs,
-                SourceGroups = employee.EmployeeSourceGroups
-            };
+            var sgs = await _context.EmployeeSourcesGroups.Where(es => es.EmployeeId == employee.Id && es.Status == 1).Select(e => e.SourceGroup).ToListAsync();
+            var newEmpDTO = _mapper.Map<ReturnEmployeeDTO>(employee);
+            List<ReturnSourceDTO> sourceDTOs = _mapper.Map<List<ReturnSourceDTO>>(sources);
+            List<ReturnSourceGroupDTO> sgDTOs = _mapper.Map<List<ReturnSourceGroupDTO>>(sgs);
+            newEmpDTO.Sources = sourceDTOs;
+            newEmpDTO.SourceGroups = sgDTOs;
             var response = new Response<ReturnEmployeeDTO>()
             {
                 Data = newEmpDTO,
@@ -116,11 +86,7 @@ namespace LRProject.Service
                 employee.Status = 1;
             }
             await _context.SaveChangesAsync();
-            var empDTO = new ReturnEmployeeDTO()
-            {
-                Id = newEmployee.Id,
-                Name = newEmployee.Name,
-            };
+            var empDTO = _mapper.Map<ReturnEmployeeDTO>(employee);
             var response = new Response<ReturnEmployeeDTO>()
             {
                 Data = empDTO,
@@ -146,14 +112,18 @@ namespace LRProject.Service
             {
                 source.Space++;
             }
-            var relations = await _context.EmployeeSources.Where(r => r.EmployeeId == employee_id && r.Status == 1).ToListAsync();
-            foreach (var relation in relations)
+            var sourceRelations = await _context.EmployeeSources.Where(r => r.EmployeeId == employee_id && r.Status == 1).ToListAsync();
+            foreach (var relation in sourceRelations)
             {
                 relation.Status = 0;
-                relation.DateDeleted = DateTimeOffset.UtcNow;
+            }
+            var sgRelations = await _context.EmployeeSourcesGroups.Where(r => r.EmployeeId == employee_id && r.Status == 1).ToListAsync();
+            foreach (var relation in sgRelations)
+            {
+                relation.Status = 0;
             }
             employee.Status = 0;
-            employee.DateDeleted = DateTimeOffset.UtcNow;
+
             // _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             var req = await GetAllEmployees();
@@ -165,11 +135,13 @@ namespace LRProject.Service
             };
             return response;
         }
-        public async Task<Response<List<Source>>> GetAllSources()
+        public async Task<Response<List<ReturnSourceDTO>>> GetAllSources()
         {
-            var response = new Response<List<Source>>()
+            var sources = await _context.Sources.Where(s => s.Status == 1).ToListAsync();
+            List<ReturnSourceDTO> sourceDTOs = _mapper.Map<List<ReturnSourceDTO>>(sources);
+            var response = new Response<List<ReturnSourceDTO>>()
             {
-                Data = await _context.Sources.Where(s => s.Status == 1).ToListAsync(),
+                Data = sourceDTOs,
                 StatusCode = 200,
                 Message = "Success, all sources returned."
             };
@@ -178,33 +150,38 @@ namespace LRProject.Service
         public async Task<Response<List<GetSourcesByGroupDTO>>> GetSourcesByGroup(int sg_id)
         {
             var sources = await _context.SourceGroups.Where(x => x.Id == sg_id && x.Status == 1).SelectMany(e => e.Sources).Include(s => s.EmployeeSources).ToListAsync();
-            var sourcesDTO = new List<GetSourcesByGroupDTO>();
-            foreach (var source in sources)
+            List<GetSourcesByGroupDTO> sourcesDTO = _mapper.Map<List<GetSourcesByGroupDTO>>(sources);
+            foreach (var source in sourcesDTO)
             {
-                if (source.Status == 1)
-                {
-                    var newSourceDTO = new GetSourcesByGroupDTO()
-                    {
-                        Id = source.Id,
-                        SourceGroupId = source.SourceGroupId,
-                        Space = source.Space,
-                    };
-                    if (source.EmployeeSources.Count > 0)
-                    {
-                        var employees = await _context.EmployeeSources.Where(s => s.SourceId == source.Id).Select(s => s.Employee).ToListAsync();
-                        foreach (var employee in employees)
-                        {
-                            var newEmpDTO = new EmpDTOIdName()
-                            {
-                                Id = employee.Id,
-                                Name = employee.Name,
-                            };
-                            newSourceDTO.Employees.Add(newEmpDTO);
-                        }
-                    }
-                    sourcesDTO.Add(newSourceDTO);
-                }
+                var employees = await _context.EmployeeSources.Where(es => es.SourceId == source.Id && es.Status == 1).Select(e => e.Employee).ToListAsync();
+                source.Employees = _mapper.Map<List<EmpDTOIdName>>(employees);
             }
+            // foreach (var source in sources)
+            // {
+            //     if (source.Status == 1)
+            //     {
+            //         var newSourceDTO = new GetSourcesByGroupDTO()
+            //         {
+            //             Id = source.Id,
+            //             SourceGroupId = source.SourceGroupId,
+            //             Space = source.Space,
+            //         };
+            //         if (source.EmployeeSources.Count > 0)
+            //         {
+            //             var employees = await _context.EmployeeSources.Where(s => s.SourceId == source.Id).Select(s => s.Employee).ToListAsync();
+            //             foreach (var employee in employees)
+            //             {
+            //                 var newEmpDTO = new EmpDTOIdName()
+            //                 {
+            //                     Id = employee.Id,
+            //                     Name = employee.Name,
+            //                 };
+            //                 newSourceDTO.Employees.Add(newEmpDTO);
+            //             }
+            //         }
+            //         sourcesDTO.Add(newSourceDTO);
+            //     }
+            // }
             var response = new Response<List<GetSourcesByGroupDTO>>()
             {
                 Data = sourcesDTO,
@@ -262,12 +239,10 @@ namespace LRProject.Service
                 };
             }
             source.Status = 0;
-            source.DateDeleted = DateTimeOffset.UtcNow;
             var relations = await _context.EmployeeSources.Where(r => r.SourceId == source_id).ToListAsync();
             foreach (var relation in relations)
             {
                 relation.Status = 0;
-                relation.DateDeleted = DateTimeOffset.UtcNow;
             }
 
 
@@ -276,24 +251,31 @@ namespace LRProject.Service
             var req = await GetAllSources();
             var response = new Response<List<Source>>()
             {
-                Data = req.Data,
+                //Data = req.Data,
                 StatusCode = 200,
                 Message = "Success, source removed"
             };
             return response;
         }
 
-        public async Task<Response<List<SourceGroup>>> GetAllSourceGroups()
+        public async Task<Response<List<ReturnSourceGroupDTO>>> GetAllSourceGroups()
         {
-            var response = new Response<List<SourceGroup>>()
+            var sgs = await _context.SourceGroups.Where(s => s.Status == 1).Include(s => s.Sources).ToListAsync();
+            var sgDTOs = _mapper.Map<List<ReturnSourceGroupDTO>>(sgs);
+            foreach (var sgDTO in sgDTOs)
             {
-                Data = await _context.SourceGroups.Where(s => s.Status == 1).Include(s => s.Sources).ToListAsync(),
+                var sources = await _context.Sources.Where(s => s.SourceGroupId == sgDTO.Id && s.Status == 1).ToListAsync();
+                sgDTO.Sources = _mapper.Map<List<ReturnSourceDTO>>(sources);
+            }
+            var response = new Response<List<ReturnSourceGroupDTO>>()
+            {
+                Data = sgDTOs,
                 StatusCode = 200,
                 Message = "Success, all source groups returned."
             };
             return response;
         }
-        public async Task<Response<List<SourceGroup>>> AddSourceGroup(int SG_id, string name, int cap)
+        public async Task<Response<List<ReturnSourceGroupDTO>>> AddSourceGroup(int SG_id, string name, int cap)
         {
             SourceGroup newSG = new SourceGroup() { Id = SG_id, Name = name, Capacity = cap, Status = 1 };
             var sg = await _context.SourceGroups.FirstOrDefaultAsync(sg => sg.Id == SG_id);
@@ -309,31 +291,34 @@ namespace LRProject.Service
             }
 
             await _context.SaveChangesAsync();
-            var response = new Response<List<SourceGroup>>()
+            var req = await GetAllSourceGroups();
+            var response = new Response<List<ReturnSourceGroupDTO>>()
             {
-                Data = await _context.SourceGroups.ToListAsync(),
+                Data = req.Data,
                 StatusCode = 201,
                 Message = "Success, new Source Group created."
             };
             return response;
         }
-        public async Task<Response<List<SourceGroup>>> RemoveSourceGroup(int sg_id)
+        public async Task<Response<List<ReturnSourceGroupDTO>>> RemoveSourceGroup(int sg_id)
         {
-            var sg = _context.SourceGroups.FirstOrDefault(s => s.Id == sg_id);
+            var sg = _context.SourceGroups.FirstOrDefault(s => s.Id == sg_id && s.Status == 1);
             if (sg == null)
             {
-                return new Response<List<SourceGroup>>()
+                return new Response<List<ReturnSourceGroupDTO>>()
                 {
                     Data = null,
                     StatusCode = 404,
                     Message = "Source Group could not be found."
                 };
             }
-            _context.SourceGroups.Remove(sg);
+            sg.Status = 0;
+            sg.DateDeleted = DateTimeOffset.UtcNow;
             await _context.SaveChangesAsync();
-            var response = new Response<List<SourceGroup>>()
+            var req = await GetAllSourceGroups();
+            var response = new Response<List<ReturnSourceGroupDTO>>()
             {
-                Data = await _context.SourceGroups.ToListAsync(),
+                Data = req.Data,
                 StatusCode = 200,
                 Message = "Success, Source Group removed."
             };
@@ -395,24 +380,8 @@ namespace LRProject.Service
 
             await _context.SaveChangesAsync();
             var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == employee.Id && es.Status == 1).Select(e => e.Source).ToListAsync();
-            List<ReturnSourceDTO> sourceDTOs = new List<ReturnSourceDTO>();
-            foreach (var foundSource in sources)
-            {
-                var sourceDTO = new ReturnSourceDTO()
-                {
-                    Id = foundSource.Id,
-                    SourceGroupId = foundSource.SourceGroupId,
-                    Space = foundSource.Space
-                };
-                sourceDTOs.Add(sourceDTO);
-            }
-            var empDTO = new ReturnEmployeeDTO()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-                Sources = sourceDTOs,
-                SourceGroups = employee.EmployeeSourceGroups
-            };
+            var empDTO = _mapper.Map<ReturnEmployeeDTO>(employee);
+            empDTO.Sources = _mapper.Map<List<ReturnSourceDTO>>(sources);
             var response = new Response<ReturnEmployeeDTO>()
             {
                 Data = empDTO,
@@ -435,17 +404,7 @@ namespace LRProject.Service
                 };
             }
             var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == employee_id && es.Status == 1).Select(s => s.Source).ToListAsync();
-            List<ReturnSourceDTO> sourceDTOs = new List<ReturnSourceDTO>();
-            foreach (var source in sources)
-            {
-                var sourceDTO = new ReturnSourceDTO()
-                {
-                    Id = source.Id,
-                    SourceGroupId = source.SourceGroupId,
-                    Space = source.Space
-                };
-                sourceDTOs.Add(sourceDTO);
-            }
+            List<ReturnSourceDTO> sourceDTOs = _mapper.Map<List<ReturnSourceDTO>>(sources);
             var response = new Response<List<ReturnSourceDTO>>()
             {
                 Data = sourceDTOs,
@@ -469,16 +428,7 @@ namespace LRProject.Service
 
             }
             var employees = await _context.EmployeeSources.Where(s => s.SourceId == source_id && s.Status == 1).Select(x => x.Employee).ToListAsync();
-            var returnDTOS = new List<EmpDTOIdName>();
-            foreach (var employee in employees)
-            {
-                var dto = new EmpDTOIdName()
-                {
-                    Id = employee.Id,
-                    Name = employee.Name
-                };
-                returnDTOS.Add(dto);
-            }
+            List<EmpDTOIdName> returnDTOS = _mapper.Map<List<EmpDTOIdName>>(employees);
             var response = new Response<List<EmpDTOIdName>>()
             {
                 Data = returnDTOS,
@@ -535,7 +485,7 @@ namespace LRProject.Service
                 Id = employee.Id,
                 Name = employee.Name,
                 Sources = sourceDTOs,
-                SourceGroups = employee.EmployeeSourceGroups
+                //SourceGroups = employee.EmployeeSourceGroups
             };
             var response = new Response<ReturnEmployeeDTO>()
             {
@@ -578,12 +528,11 @@ namespace LRProject.Service
             _context.Add(employeeSourceGroup);
 
             await _context.SaveChangesAsync();
-            var empDTO = new ReturnEmployeeDTO()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-
-            };
+            var empDTO = _mapper.Map<ReturnEmployeeDTO>(employee);
+            var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
+            var sgs = await _context.EmployeeSourcesGroups.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
+            empDTO.Sources = _mapper.Map<List<ReturnSourceDTO>>(sources);
+            empDTO.SourceGroups = _mapper.Map<List<ReturnSourceGroupDTO>>(sgs);
             var response = new Response<ReturnEmployeeDTO>()
             {
                 Data = empDTO,
@@ -609,11 +558,11 @@ namespace LRProject.Service
             }
             employee.Name = request.Name;
             await _context.SaveChangesAsync();
-            var empDTO = new ReturnEmployeeDTO()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-            };
+            var empDTO = _mapper.Map<ReturnEmployeeDTO>(employee);
+            var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
+            var sgs = await _context.EmployeeSourcesGroups.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
+            empDTO.Sources = _mapper.Map<List<ReturnSourceDTO>>(sources);
+            empDTO.SourceGroups = _mapper.Map<List<ReturnSourceGroupDTO>>(sgs);
             var response = new Response<ReturnEmployeeDTO>()
             {
                 Data = empDTO,
@@ -623,7 +572,7 @@ namespace LRProject.Service
             return response;
         }
         // FİX OBJECT CYCLE BELOW
-        public async Task<Response<List<SourceGroup>>> UpdateSourceGroup(int sg_id, int former_emp_id, int employee_id)
+        public async Task<Response<ReturnSourceGroupDTO>> UpdateSourceGroup(int sg_id, int former_emp_id, int employee_id)
         {
 
             var sg = await _context.SourceGroups.FirstOrDefaultAsync(s => s.Id == sg_id && s.Status == 1);
@@ -631,7 +580,7 @@ namespace LRProject.Service
             var former_emp = await _context.Employees.FirstOrDefaultAsync(e => e.Id == former_emp_id && e.Status == 1);
             if (employee == null || former_emp == null)
             {
-                return new Response<List<SourceGroup>>()
+                return new Response<ReturnSourceGroupDTO>()
                 {
                     Data = null,
                     StatusCode = 404,
@@ -640,7 +589,7 @@ namespace LRProject.Service
             }
             else if (sg == null)
             {
-                return new Response<List<SourceGroup>>()
+                return new Response<ReturnSourceGroupDTO>()
                 {
                     Data = null,
                     StatusCode = 404,
@@ -650,7 +599,7 @@ namespace LRProject.Service
             var relation = await _context.EmployeeSourcesGroups.FirstOrDefaultAsync(esg => esg.EmployeeId == former_emp_id && esg.SourceGroupId == sg_id && esg.Status == 1);
             if (relation == null)
             {
-                return new Response<List<SourceGroup>>()
+                return new Response<ReturnSourceGroupDTO>()
                 {
                     Data = null,
                     StatusCode = 404,
@@ -658,7 +607,6 @@ namespace LRProject.Service
                 };
             }
             relation.Status = 0;
-            relation.DateDeleted = DateTimeOffset.UtcNow;
             var newRelation = new EmployeeSourceGroup()
             {
                 Employee = employee,
@@ -667,10 +615,10 @@ namespace LRProject.Service
             };
             _context.Add(newRelation);
             await _context.SaveChangesAsync();
-            var req = await GetAllSourceGroups();
-            var response = new Response<List<SourceGroup>>()
+            var sgDTO = _mapper.Map<ReturnSourceGroupDTO>(sg);
+            var response = new Response<ReturnSourceGroupDTO>()
             {
-                Data = req.Data,
+                Data = sgDTO,
                 StatusCode = 200,
                 Message = "Success, Source Group updated."
             };
@@ -731,12 +679,11 @@ namespace LRProject.Service
             }
             await RemoveRelationship(employee.Id, source.Id);
             await AddRelationship(employee.Id, newSource.Id);
-            var empDTO = new ReturnEmployeeDTO()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-
-            };
+            var empDTO = _mapper.Map<ReturnEmployeeDTO>(employee);
+            var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
+            var sgs = await _context.EmployeeSourcesGroups.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
+            empDTO.Sources = _mapper.Map<List<ReturnSourceDTO>>(sources);
+            empDTO.SourceGroups = _mapper.Map<List<ReturnSourceGroupDTO>>(sgs);
             var response = new Response<ReturnEmployeeDTO>()
             {
                 Data = empDTO,

@@ -9,7 +9,11 @@ namespace LRProject.Data
 {
     public class DataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        private readonly IUserService _userService;
+        public DataContext(DbContextOptions<DataContext> options, IUserService userService) : base(options)
+        {
+            _userService = userService;
+        }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Source> Sources { get; set; }
         public DbSet<SourceGroup> SourceGroups { get; set; }
@@ -57,6 +61,7 @@ namespace LRProject.Data
                 if (fullyAuditableEntity != null)
                 {
                     fullyAuditableEntity.DateCreated = DateTimeOffset.UtcNow;
+                    fullyAuditableEntity.CreatedByUser = _userService.GetMyId();
                 }
                 if (partiallyAuditableEntity != null)
                 {
@@ -75,12 +80,27 @@ namespace LRProject.Data
                 var partiallyAuditableEntity = modifiedEntry as PartiallyAuditable;
                 if (fullyAuditableEntity != null)
                 {
-                    fullyAuditableEntity.DateUpdated = DateTimeOffset.UtcNow;
-
+                    if (fullyAuditableEntity.Status == 0)
+                    {
+                        fullyAuditableEntity.DateDeleted = DateTimeOffset.UtcNow;
+                        fullyAuditableEntity.DeletedByUser = _userService.GetMyId();
+                    }
+                    else
+                    {
+                        fullyAuditableEntity.DateUpdated = DateTimeOffset.UtcNow;
+                        fullyAuditableEntity.UpdatedByUser = _userService.GetMyId();
+                    }
                 }
                 if (partiallyAuditableEntity != null)
                 {
-                    partiallyAuditableEntity.DateUpdated = DateTimeOffset.UtcNow;
+                    if (partiallyAuditableEntity.Status == 0)
+                    {
+                        partiallyAuditableEntity.DateDeleted = DateTimeOffset.UtcNow;
+                    }
+                    else
+                    {
+                        partiallyAuditableEntity.DateUpdated = DateTimeOffset.UtcNow;
+                    }
                 }
             }
 
