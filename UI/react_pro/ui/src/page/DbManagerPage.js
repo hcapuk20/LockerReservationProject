@@ -4,21 +4,29 @@
 // add delete update source group
 // add delete update source
 // can an employee multiple sources from the same source group
-
 import { useState } from "react";
 import axios from "../api/axios";
 import Modal from "../components/Modal";
+import { useNavigate } from "react-router-dom";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Checklist from "../components/Checklist";
+
+
 //const { auth } = useAuth();
 //const user = auth.user;
 //console.log(auth)
-const sytles1 = {
-        position: 'relative',
-        zIndex: 1
-}
+
 
 function DbManagerPage() {
 
-        const [modelData, setModalData] = useState({ openModal: false, attributeKeys: "", attributeData: "" });
+        const navigate = useNavigate();
+
+        const [modalData, setModalData] = useState({ openModal: false, attributeKeys: "", attributeData: "" });
+        const [closeChecklist, setCloseChecklist] = useState(false)
 
         const [operations, setOperations] = useState([
                 {
@@ -178,9 +186,7 @@ function DbManagerPage() {
                         url = url.slice(0, url.length - 1)
 
                 }
-                console.log(Object.keys(params).length)
-                console.log((url))
-                return await axios[operations[position].type](url).catch((err)=>{ return err});
+                return await axios[operations[position].type](url).catch((err) => { return err });
         }
 
 
@@ -188,78 +194,114 @@ function DbManagerPage() {
         function handleSubmit(event, componentIndex) {
                 event.preventDefault();
                 const position = componentIndex;
-                console.log(position)
                 if (operations[position].type === "get") {  //here return some kind of data
-                      
-                                getData(position).then((response) => {
-                                        console.log("response.data.data")
-                                        console.log(response.data.data)
-                                        console.log("response.data.data")
 
-                                        if (!response.data.data) {
-                                                alert("no record found!")
-                                        }
-                                        let foundData = response.data.data;
+                        getData(position).then((response) => {
 
-                                        if (!Array.isArray(foundData)) {
-                                                let arr = [];
-                                                arr.push(foundData);
-                                                foundData = arr;
-                                        }
-                                        console.log(foundData)
+                                if (!response.data.data) {
+                                        alert("no record found!")
+                                }
+                                let foundData = response.data.data;
 
-                                        setModalData({
-                                                openModal: true,
-                                                attributeKeys: Object.keys(foundData[0]),
-                                                attributeData: foundData
-                                        });
+                                if (!Array.isArray(foundData)) {
+                                        let arr = [];
+                                        arr.push(foundData);
+                                        foundData = arr;
+                                }
+                                console.log(foundData)
 
-                                }).catch(()=>{alert("unkown error"); return;})
+                                setModalData({
+                                        openModal: true,
+                                        attributeKeys: Object.keys(foundData[0]),
+                                        attributeData: foundData
+                                });
+
+                        }).catch(() => { alert("unkown error"); return; })
 
 
                 } else {
-                                getData(position).then((response) => {
-                                        alert(response.data.message)
-                                }).catch(()=>{alert("unkown error"); return;})
+                        getData(position).then((response) => {
+                                alert(response.data.message)
+                        }).catch(() => { alert("unkown error"); return; })
                 }
         }
+        function handleEmployeeSubmit(arr) {
+                console.log(arr)
 
 
+        }
         return (
-                <div>
-                        <div style={sytles1}>
-                                {console.log(operations)}
-                                {console.log("here")}
+                <Container component="main" maxWidth="xs">
+                        <Box sx={{
+                                marginTop: 8,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                        }}>
                                 {
                                         operations.map((item, componentIndex) => {
                                                 return (
-                                                        <div>
-                                                                <h2> {item.functionName}</h2>
-                                                                <>
+                                                        <>
+                                                                <Typography variant="h3" gutterBottom sx={{ margin: 5 }} >
+                                                                        {item.functionName}
+                                                                </Typography>
+                                                                <Box sx={{
+
+                                                                        display: 'flex',
+                                                                        flexDirection: 'row',
+                                                                        alignItems: 'center',
+                                                                }}>
                                                                         {Object.keys(item.params).map((parameter, index) => {
 
-                                                                                return (<form>
-                                                                                        <input
+                                                                                return (
+                                                                                        <TextField
+                                                                                                required
+                                                                                                fullwidth
                                                                                                 type="text"
+                                                                                                sx={{ mt: 2, mb: 1 }}
                                                                                                 placeholder={parameter}
                                                                                                 name={parameter}
-                                                                                                onChange={(event) => handleInput(event, componentIndex)}
-                                                                                                value={item.params[index]}>
-                                                                                        </input>
-                                                                                </form>
+                                                                                                onChange={(event) =>
+                                                                                                        handleInput(event, componentIndex)
+                                                                                                }
+
+                                                                                                value={item.params[index]}
+                                                                                        />
                                                                                 );
                                                                         })}
+                                                                </Box>
+                                                                <Button
+                                                                        type="submit"
+                                                                        fullWidth
+                                                                        variant="outlined"
+                                                                        sx={{ mt: 2, mb: 1 }}
+                                                                        onClick={(event) => {
+                                                                                operations[componentIndex].functionName === 'AddEmployee' ?
+                                                                                        setCloseChecklist(true) :
+                                                                                        handleSubmit(event, componentIndex)
 
-                                                                        <button onClick={(event) => { handleSubmit(event, componentIndex) }}>submit</button>
-
-                                                                </>
-                                                        </div>
+                                                                        }}
+                                                                >
+                                                                        Submit
+                                                                </Button>
+                                                        </>
                                                 );
                                         })
                                 }
-                        </div>
-                        <Modal modelData={modelData} closeModal={closeModal} ></Modal>
-                </div>
+                        </Box>
+                        <Checklist closeChecklist={closeChecklist} setCloseChecklist={setCloseChecklist} handleEmployeeSubmit={handleEmployeeSubmit} ></Checklist>
+                        <Modal modalData={modalData} closeModal={closeModal} ></Modal>
+                        <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 2, mb: 1 }}
+                                onClick={() => { navigate("/navigationpage"); }}
+                        >
+                                return back
+                        </Button>
+
+                </Container>
         )
 
 

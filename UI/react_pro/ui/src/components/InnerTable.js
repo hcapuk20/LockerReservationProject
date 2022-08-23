@@ -1,3 +1,20 @@
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
+
+
 
 import axios from '../api/axios'
 import { useEffect, useState } from 'react';
@@ -21,51 +38,48 @@ function InnerTable({ item_id }) {
             }
         }
         fetchData();
-    }, [item_id ,render]);
+    }, [item_id, render]);
 
     function CreateTable({ arr }) {
-
-
         return (
-        <div>
-            <table >
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
+            <>
+                <Table size="small" aria-label="purchases" sx={{ '& > *': { borderBottom: 'unset' } }}>
+                    <TableHead>
+                        <TableRow sx={{
+                                        borderBottom: "1px solid black"
+                                    }}>
+                            <TableCell>id</TableCell>
+                            <TableCell>name</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {arr.map(item => {
                             return (
-                                <tr>
-                                    <td>{item.id}</td>
-                                    <td>{item.name}</td>
-                                </tr>
+                                <TableRow sx={{
+                                    borderBottom: "1.4px solid white",
+                                    
+                                    
+                                }}>
+                                    <TableCell>{item.id}</TableCell>
+                                    <TableCell>{item.name}</TableCell>
+                                </TableRow>
                             );
                         })}
-                    </tr>
+                    </TableBody>
 
-                </tbody>
-
-            </table>
-            <EditRow source_id = {item_id} renderMethod = {setRender} render = {render}/>
-        </div>
-
-
+                </Table>
+                <EditRow source_id={item_id} renderMethod={setRender} render={render}  />
+            </>
         );
-
-
     }
 
 
 
     return (<div>
-        {data ? (Object.keys(data).length !== 0 ? <CreateTable arr={data} /> : 
+        {data ? (Object.keys(data).length !== 0 ? <CreateTable arr={data} /> :
 
-        (<div><div>Table is empty </div><EditRow source_id = {item_id} renderMethod = {setRender} render = {render}/></div>)) : 
-        (<div><div>Table is empty </div><EditRow source_id = {item_id} renderMethod = {setRender} render = {render}/></div>)}
+            (<div><div>Table is empty </div><EditRow source_id={item_id} renderMethod={setRender} render={render} /></div>)) :
+            (<div><div>Table is empty </div><EditRow source_id={item_id} renderMethod={setRender} render={render} /></div>)}
     </div>);
 
 

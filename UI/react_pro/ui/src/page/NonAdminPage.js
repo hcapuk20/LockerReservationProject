@@ -1,6 +1,20 @@
+
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 //import Form from "../components/Form";
+import { useNavigate } from "react-router-dom"
 import useAuth from "../auth/useAuth";
 function NonAdminPage() {
+
+    const navigate = useNavigate();
+
     function findAttributes(item) {   //buraları değiştir
 
         const attr = []
@@ -8,7 +22,7 @@ function NonAdminPage() {
             attr.push(value)
         }
         return (attr.map(item => {
-            return (<td>{item}</td>)
+            return (<TableCell>{item}</TableCell>)
         })
         )
     }
@@ -33,23 +47,30 @@ function NonAdminPage() {
 
     return (
         <div>
-        <h2>Owned Sources:</h2>
-        <table>
-            <thead>
-                <tr>
-                    {attributeNames.map((item) => {
-                        return (<th>{item}</th>);
-                    })}
-                </tr>
-            </thead>
-            <br></br>
-            <tbody>
-                {sources.map((item) => {
-                    return (<tr>{findAttributes(item)}</tr>);
-                })
-                }
-            </tbody>
-        </table>
+            <Typography variant="h3" gutterBottom sx={{ margin: 5 }} >
+                Owned Sources:
+            </Typography>
+            <TableContainer component={Paper} sx={{ margin: 5, width: 9 / 10 }} >
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            {attributeNames.map((item) => {
+                                return (<TableCell>{item}</TableCell>);
+                            })}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {sources.map((item) => {
+                            return (<TableRow>{findAttributes(item)}</TableRow>);
+                        })
+                        }
+                    </TableBody>
+                </Table >
+
+            </TableContainer>
+            <Button variant="outlined" sx={{ width: 300, margin: 5 }} onClick={() => { navigate("/navigationpage") }} >
+                Go to the navigationpage page
+            </Button>
         </div>
     );
 }

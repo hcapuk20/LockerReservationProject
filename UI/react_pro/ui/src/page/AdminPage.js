@@ -1,7 +1,10 @@
 
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 //import useAuth from "../auth/useAuth";
 import { useNavigate } from "react-router-dom";
-import Buttons from "../components/Butttons";
+import Buttons from "../components/Buttons";
 
 
 
@@ -17,20 +20,29 @@ function AdminPage() {
     return (
 
 
-        (<div>
-            <h1>AdminPage</h1>
+        (
+            <Box sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}>
+            <Typography variant="h2" gutterBottom >
+                Admin Page
+            </Typography>
 
-            <h2>Source 
-                 Groups:</h2>
-            <br />
+            <Typography variant="h4" gutterBottom >
+                Source Groups
+            </Typography>
             <Buttons />
             <br />
             <br />
-            <br />
-            <br />
-            <button onClick={() => { navigate("/navigationpage") }}>  return to home page  </button>
+            <br />            
+            <Button variant="outlined" sx={{ width: 345, margin: 1 }} onClick={() => {  navigate("/navigationpage")}}  >
+            return to home page
+            </Button>
 
-        </div>)
+        </ Box>)
 
     );
 }
