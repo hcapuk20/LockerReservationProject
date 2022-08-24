@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LRProject.Data;
 using Microsoft.AspNetCore.Authorization;
+using LRProject.Models;
 
 namespace LRProject.Controllers
 {
@@ -20,14 +21,17 @@ namespace LRProject.Controllers
         public IConfiguration _config;
         private readonly DataContext _context;
         private readonly IUserService _userService;
+        private readonly ISourceService _sourceService;
 
-        public TokenController(IConfiguration config, DataContext context, IUserService userService)
+        public TokenController(IConfiguration config, DataContext context, IUserService userService, ISourceService sourceService)
         {
             _config = config;
             _context = context;
             _userService = userService;
+            _sourceService = sourceService;
         }
         [HttpGet]
+        [Route("getUserId")]
         public ActionResult<string> GetUserid()
         {
             var userid = _userService.GetMyId();
@@ -36,8 +40,8 @@ namespace LRProject.Controllers
 
 
         [HttpPost]
-        [Route("createToken")]
-        public async Task<IActionResult> Post(int id, string password)
+        [Route("login")]
+        public async Task<IActionResult> Login(int id, string password)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id && e.Password == password && e.Status == 1);
             if (employee != null)
@@ -58,7 +62,13 @@ namespace LRProject.Controllers
                     expires: DateTime.UtcNow.AddMinutes(15),
                     signingCredentials: cred);
 
-                return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
+                var req = await _sourceService.GetEmployeeById(id);
+                var emp = req.Data;
+
+                return Ok(new LoginResult() { Token = accessToken, Employee = emp });
+
+                //return Ok(new JwtSecurityTokenHandler().WriteToken(token));
             }
             else
             {

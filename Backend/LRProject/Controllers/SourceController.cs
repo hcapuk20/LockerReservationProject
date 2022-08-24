@@ -70,14 +70,14 @@ namespace LRProject.Controllers
         [HttpPost]
         [Route("addSource")]
 
-        public async Task<ActionResult<Response<List<Source>>>> AddSource(int id, int sg_id)
+        public async Task<ActionResult<Response<List<ReturnSourceDTO>>>> AddSource(int id, int sg_id)
         {
             return Ok(await _ISourceService.AddSource(id, sg_id));
         }
         [HttpDelete]
         [Route("removeSource")]
 
-        public async Task<ActionResult<Response<List<Source>>>> RemoveSource(int source_id)
+        public async Task<ActionResult<Response<List<ReturnSourceDTO>>>> RemoveSource(int source_id)
         {
             return Ok(await _ISourceService.RemoveSource(source_id));
         }
@@ -164,13 +164,7 @@ namespace LRProject.Controllers
         {
             return Ok(await _ISourceService.UpdateRelationship(emp_id, source_id, new_source_id));
         }
-        [HttpGet]
-        [Route("login")]
 
-        public async Task<ActionResult<Response<int>>> Login(int user_id)
-        {
-            return Ok(await _ISourceService.Login(user_id));
-        }
         // [HttpPost]
         // [Route("addAutoRelationship")]
         // public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddAutoRelationship(int emp_id, int sg_id)
