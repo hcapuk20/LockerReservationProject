@@ -216,13 +216,13 @@ function DbManagerPage() {
                                         attributeData: foundData
                                 });
 
-                        }).catch(() => { alert("unkown error"); return; })
+                        }).catch((err) => { alert(err); return; })
 
 
                 } else {
                         getData(position).then((response) => {
                                 alert(response.data.message)
-                        }).catch(() => { alert("unkown error"); return; })
+                        }).catch((err) => { alert(err); return; })
                 }
         }
         function handleEmployeeSubmit(arr) {

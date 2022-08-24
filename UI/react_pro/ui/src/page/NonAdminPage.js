@@ -30,19 +30,15 @@ function NonAdminPage() {
 
     const { auth } = useAuth();
     const sources = auth.user.sources;
+    console.log("sources")
+    console.log(sources)
+    console.log("sources")
     let attributeNames;
     try {
         attributeNames = Object.keys(sources[0])
     } catch {
         return <h1>You do not have any sources.</h1>;
     }
-
-    console.log(attributeNames)
-    console.log(sources[0].id)
-
-
-
-
 
 
     return (

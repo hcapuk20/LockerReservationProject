@@ -40,6 +40,7 @@ function LoginPage() {
             const first = formData.firstName
             const second = formData.passWord
             const response = await axios.get(`https://localhost:7125/api/Source/getEmployeeById?employee_id=${first}`);
+            console.log(response.data.data)
             setAuth({ firstName: first, password: second, user: response.data.data });
             navigate('/navigationpage');
 

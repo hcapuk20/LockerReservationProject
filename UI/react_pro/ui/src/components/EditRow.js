@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+
 const React = require("react")
 
 
@@ -15,7 +16,6 @@ function EditRow({ source_id, renderMethod }) {
 
     let attributesArr = [];
     attributesArr = ['id', 'name']
-
     const obj = {};
 
     for (const key of attributesArr) {
@@ -51,6 +51,7 @@ function EditRow({ source_id, renderMethod }) {
         let response;
         try {
             response = axios.delete(`https://localhost:7125/api/Source/removeRelationship?employee_id=${formData.id}&source_id=${source_id}`)
+
             setMessage((await response).data.message)
             renderMethod(render => !render);
         } catch (err) {
