@@ -26,6 +26,7 @@ namespace LRProject.Controllers
 
         [HttpGet]
         [Route("getAllEmployees")]
+        [Authorize(Roles = "DbManager")]
 
 
         public async Task<ActionResult<Response<List<ReturnEmployeeDTO>>>> GetAllEmployees()
@@ -34,6 +35,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getEmployeeById")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> GetEmployeeById(int employee_id)
         {
@@ -42,12 +44,13 @@ namespace LRProject.Controllers
         [HttpPost]
         [Route("addEmployee")]
 
-        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddEmployee(int employee_id, string name, string password, string role)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddEmployee(int employee_id, string name, string password, string role, int sg_id)
         {
-            return Ok(await _ISourceService.AddEmployee(employee_id, name, password, role));
+            return Ok(await _ISourceService.AddEmployee(employee_id, name, password, role, sg_id));
         }
         [HttpDelete]
         [Route("removeEmployee")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<ReturnEmployeeDTO>>>> RemoveEmployee(int employee_id)
         {
@@ -55,6 +58,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getAllSources")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<ReturnSourceDTO>>>> GetAllSources()
         {
@@ -62,6 +66,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getSourcesByGroup")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<GetSourcesByGroupDTO>>>> GetSourcesByGroup(int group_id)
         {
@@ -69,6 +74,7 @@ namespace LRProject.Controllers
         }
         [HttpPost]
         [Route("addSource")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<ReturnSourceDTO>>>> AddSource(int id, int sg_id)
         {
@@ -76,6 +82,7 @@ namespace LRProject.Controllers
         }
         [HttpDelete]
         [Route("removeSource")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<ReturnSourceDTO>>>> RemoveSource(int source_id)
         {
@@ -83,6 +90,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getAllSourceGroups")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<ReturnSourceGroupDTO>>>> GetAllSourceGroups()
         {
@@ -90,6 +98,7 @@ namespace LRProject.Controllers
         }
         [HttpPost]
         [Route("addSourceGroup")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<ReturnSourceGroupDTO>>>> AddSourceGroup(int sourceGroup_id, string name, int cap)
         {
@@ -97,6 +106,7 @@ namespace LRProject.Controllers
         }
         [HttpDelete]
         [Route("removeSourceGroup")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<ReturnSourceGroupDTO>>>> RemoveSourceGroup(int source_group_id)
         {
@@ -107,12 +117,14 @@ namespace LRProject.Controllers
         [HttpPost]
         [Route("addRelationship")]
 
+
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddRelationship(int employee_id, int source_id)
         {
             return Ok(await _ISourceService.AddRelationship(employee_id, source_id));
         }
         [HttpGet]
         [Route("getSourcesOfEmployee")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<Source>>>> GetSourcesOfEmployee(int employee_id)
         {
@@ -120,6 +132,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getOwnersOfSource")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<EmpDTOIdName>>>> GetOwnersOfSource(int source_id)
         {
@@ -130,6 +143,7 @@ namespace LRProject.Controllers
 
         [HttpDelete]
         [Route("removeRelationship")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> RemoveRelationship(int employee_id, int source_id)
         {
@@ -137,6 +151,7 @@ namespace LRProject.Controllers
         }
         [HttpPost]
         [Route("addAdministration")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddAdministration(int employee_id, int sg_id)
         {
@@ -145,6 +160,7 @@ namespace LRProject.Controllers
 
         [HttpPut]
         [Route("updateEmployee")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> UpdateEmployee(UpdateEmployeeDTO request)
         {
@@ -152,6 +168,7 @@ namespace LRProject.Controllers
         }
         [HttpPut]
         [Route("updateSourceGroup")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<ReturnSourceGroupDTO>>> UpdateSourceGroup(int sg_id, int former_id, int emp_id)
         {
@@ -159,18 +176,13 @@ namespace LRProject.Controllers
         }
         [HttpPut]
         [Route("updateRelationship")]
+        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> UpdateRelationship(int emp_id, int source_id, int new_source_id)
         {
             return Ok(await _ISourceService.UpdateRelationship(emp_id, source_id, new_source_id));
         }
 
-        // [HttpPost]
-        // [Route("addAutoRelationship")]
-        // public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddAutoRelationship(int emp_id, int sg_id)
-        // {
-        //     return Ok(await _ISourceService.AddAutoRelationship(emp_id, sg_id));
-        // }
 
     }
 }

@@ -12,7 +12,6 @@ namespace LRProject.Profiles
         public AutoMapperProfile()
         {
             CreateMap<Employee, ReturnEmployeeDTO>();
-            //CreateMap<List<Employee>, List<ReturnEmployeeDTO>>();
 
             CreateMap<Source, ReturnSourceDTO>();
 

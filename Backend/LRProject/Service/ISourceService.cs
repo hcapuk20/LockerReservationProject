@@ -8,7 +8,7 @@ namespace LRProject.Service
 {
     public interface ISourceService
     {
-        Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string password, string role, string name);
+        Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string password, string role, string name, int sg_id);
         Task<Response<List<ReturnEmployeeDTO>>> GetAllEmployees();
         Task<Response<ReturnEmployeeDTO>> GetEmployeeById(int employee_id);
         Task<Response<List<ReturnSourceDTO>>> GetAllSources();
