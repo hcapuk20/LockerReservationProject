@@ -63,9 +63,10 @@ function NavigationPage() {
                             Go to the Admin page
                         </Button>
 
+                        {auth.userData.role === 'DbManager' &&
                         <Button variant="outlined" sx={{ width: 180, margin: 0, color: '#fff', my: 2 }} onClick={checkRole}  >
                             Manage database
-                        </Button>
+                        </Button>}
                         <Button variant="contained"  sx={{ width: 150, margin: 1, my: 2 }}  onClick={logout}>
                             Sign Out
                         </Button>
