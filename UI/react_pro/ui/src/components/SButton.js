@@ -12,7 +12,7 @@ function SButton(props) {
 
     const navigate = useNavigate();
     const { auth } = useAuth();
-    const adminGroups = auth.user.sourceGroups;
+    const adminGroups = auth.userData.sourceGroups;
 
 
     function getResources(buttonSourceGroup,buttonId) {

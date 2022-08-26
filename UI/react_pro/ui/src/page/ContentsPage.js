@@ -1,3 +1,15 @@
+//role based authantication  - set auth a editleyebildiği surce group ları yazarsan ordan checleyebilirsin
+//try to merge forms 
+//autantication her zaman logine atmasın - logged inse eğer
+//her source group için authentication yaz
+//source group un kendisi de editlenecek mi?
+// enter a basınca otomatik çıkartıyor
+//login firstname mevzusunu değiştir
+// getAdminGroups loginde axios error verirse patlıyor. bak
+//then kısmında if kısmı yanlış olabılır bak
+//bazı yerlerde try catch calısmıyor neden bak
+//axiosların catch kısmını değişitr
+//employee sayısı ekrandan taşarsa ne olur bak
 
 
 //import useAuth from "../auth/useAuth";

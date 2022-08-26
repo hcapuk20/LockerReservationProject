@@ -15,7 +15,7 @@ function EditRow({ source_id, renderMethod }) {
 
 
     let attributesArr = [];
-    attributesArr = ['id', 'name']
+    attributesArr = ['id']
     const obj = {};
 
     for (const key of attributesArr) {

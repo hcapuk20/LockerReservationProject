@@ -98,7 +98,7 @@ export default function CheckboxesGroup({ closeChecklist, handleEmployeeSubmit, 
                     let arr = []
                     checked.forEach((element, index) => {
                         if (element) {
-                            arr.push(sourceGroups[index])
+                            arr.push(sourceGroups[index].id)
                         }
                     }
                     );

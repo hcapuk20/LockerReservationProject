@@ -43,7 +43,7 @@ function DbManagerPage() {
                 },
                 {
                         functionName: "AddEmployee",
-                        params: { employee_id: "", password: "", name: "" },
+                        params: { employee_id: "", password: "", name: "", role: "" },
                         type: "post",
                         url: "https://localhost:7125/api/Source/addEmployee?"
                 },
@@ -152,8 +152,6 @@ function DbManagerPage() {
 
         function handleInput(event, componentIndex) {
                 const { name, value } = event.target
-                console.log(name)
-                console.log(value)
                 const position = componentIndex;
 
                 setOperations(() => {
@@ -186,7 +184,7 @@ function DbManagerPage() {
                         url = url.slice(0, url.length - 1)
 
                 }
-                return await axios[operations[position].type](url).catch((err) => { return err });
+                return await axios[operations[position].type](url)
         }
 
 
@@ -222,12 +220,36 @@ function DbManagerPage() {
                 } else {
                         getData(position).then((response) => {
                                 alert(response.data.message)
-                        }).catch((err) => { alert(err); return; })
+                        }).catch((err) => { 
+                                if (err.response) {
+                                        alert("unkown error");
+                                      } else if (err.request) {
+                                        alert("error: no response received");
+                                      } else {
+                                        alert("unkown error");
+                                      }
+                                      
+                               return; })
                 }
         }
         function handleEmployeeSubmit(arr) {
-                console.log(arr)
-
+                let position;
+                operations.forEach((element, index) => {
+                        console.log(element.functionName )
+                        if (element.functionName === 'AddEmployee') {
+                                position = index;
+                        }
+                }
+                );
+                console.log(position)
+                axios({
+                        method: operations[position].type,
+                        url: operations[position].url,
+                        data: {
+                                arr: arr,
+                                params: operations[position].params
+                        }
+                });
 
         }
         return (

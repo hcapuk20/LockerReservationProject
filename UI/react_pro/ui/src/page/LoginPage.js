@@ -8,8 +8,6 @@ import Container from '@mui/material/Container';
 import useAuth from '../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-//Link
-//const LOGIN_URL = '/auth';
 
 
 const React = require("react")
@@ -32,16 +30,20 @@ function LoginPage() {
             }
         })
     }
-        const handleSubmit  = async (event) => {
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
         try {
 
             const first = formData.firstName
             const second = formData.passWord
-            const response = await axios.get(`https://localhost:7125/api/Source/getEmployeeById?employee_id=${first}`);
-            console.log(response.data.data)
-            setAuth({ firstName: first, password: second, user: response.data.data });
+
+
+
+
+            const response = await axios.post(`/api/Token/login?id=${first}&password=${second}`);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+            setAuth({ firstName: first, password: second, userData: response.data.employee });
             navigate('/navigationpage');
 
         } catch (error) {
@@ -65,13 +67,16 @@ function LoginPage() {
                     Sign in
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                    {errorMessage && <p> Wrong name or password!</p>}
+                    {errorMessage &&
+                        <Typography variant="h6" sx={{ margin: '15px' }}>
+                            Wrong name or password!
+                        </Typography>}
                     <TextField
                         sx={{ margin: '6px' }}
                         required
                         fullWidth
                         type="text"
-                        placeholder="firstName"
+                        placeholder="id"
                         name="firstName"
                         onChange={HandleInput}
                         value={formData.firstName}
@@ -80,7 +85,7 @@ function LoginPage() {
                         sx={{ margin: '6px' }}
                         required
                         fullWidth
-                        type="text"
+                        type="password"
                         placeholder="passWord"
                         name="passWord"
                         onChange={HandleInput}
