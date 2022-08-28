@@ -34,7 +34,7 @@ function InnerTable({ item_id }) {
     function CreateTable({ arr }) {
         return (
             <>
-                <Table size="small" aria-label="purchases" sx={{ '& > *': { borderBottom: 'unset' } }}>
+                <Table size="small" sx={{ '& > *': { borderBottom: 'unset' } }}>
                     <TableHead>
                         <TableRow sx={{
                                         borderBottom: "1px solid black"

@@ -1,60 +1,67 @@
 
 import SButton from "./SButton.js"
-import axios from '../api/axios'
-import React, { useState, useEffect } from "react"
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
-
-//get all the source groups
-//for each source group, create a new button 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import useAuth from '../auth/useAuth';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 
 function Buttons() {
-
-    const [sourceGroups, setSourceGroups] = useState([]);
-    const [errorMessage, setErrorMessage] = useState(false);
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await axios.get('https://localhost:7125/api/Source/getAllSourceGroups')
-                setSourceGroups(response.data.data);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        fetchData();
-    }, []);
+    const { auth } = useAuth();
+    const accesibleGroups = auth.userData.sourceGroups;
 
 
-    return (
 
-        <Box >
-            {errorMessage &&
-                <Box sx={{
-                    marginTop: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }} >
-                    <Typography variant="h5" gutterBottom  >
-                        not authorized!
-                    </Typography>
-                </Box>
-            }
-            <Box sx={{
-                marginTop: 4,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-            }}>
-                {sourceGroups.map(
-                    button => {
-                        return (<SButton key={button.id} buttonId={button.id} name={button.name} setErrorMessage={setErrorMessage} />)
-                    }
-                )}
-            </Box>
-        </Box>
-    );
+
+    if (accesibleGroups.length !== 0) {
+        return (
+            <>
+                <Typography variant="h4"  >
+                    Source Groups
+                </Typography>
+
+                <TableContainer component={Paper} sx={{ mt: 4, ml: 4, width: 9 / 10 }} >
+                    <Table >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell> Id</TableCell>
+                                <TableCell>  Name</TableCell>
+                                <TableCell>  Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+
+                                accesibleGroups.map(
+                                    button => {
+                                        return (
+                                            <TableRow>
+                                                <TableCell>    {button.id}</TableCell>
+                                                <TableCell>    {button.name}</TableCell>
+                                                <TableCell>    <SButton key={button.id} buttonId={button.id} name={button.name} /></TableCell>
+                                            </TableRow>
+                                        )
+                                    }
+                                )
+
+
+                            }
+                        </TableBody>
+                    </Table>
+
+                </TableContainer>
+            </>
+        );
+    } else {
+        return (
+            <Typography variant="h4"  >
+                You have no adminship!
+            </Typography>);
+    }
 
 }
 

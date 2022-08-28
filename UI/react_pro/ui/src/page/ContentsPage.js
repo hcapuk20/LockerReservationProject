@@ -1,4 +1,5 @@
 
+
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -12,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import { useNavigate, useLocation } from "react-router-dom";
 import InnerTable from "../components/InnerTable";
 import { useState } from "react";
-
+import Navbar from '../components/Navbar';
 function ContentsPage() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ function ContentsPage() {
     let arrayWithData = [];
 
     arrayWithData = location.state.arr;
-
+  
 
     let stateArray = new Array(arrayWithData.length);
     stateArray.fill(false);
@@ -38,12 +39,11 @@ function ContentsPage() {
     }
     const attrArray = Object.keys(arrayWithData[0]);
     attrArray.push('actions');
-
+console.log(attrArray)
 
 
 
     function showContent(change_index) {
-        console.log(change_index)
         const newState = showInnerTable.map((value, index) => {
             if (index === change_index) {
                 console.log("changed")
@@ -68,13 +68,16 @@ function ContentsPage() {
 
     return (
         <div>
+            <Navbar landingPage={`Contents of "${location.state.buttonSourceGroup}" :`}/>
             <TableContainer component={Paper} sx={{ mt: 4,ml: 4, width: 9 / 10 }} >
-                <Table aria-label="collapsible table">
+                <Table >
                     <TableHead>
                         <TableRow >
                             {attrArray.map((item, index) => {
+                                console.log({item}.item)
                                 return (
-                                    <TableCell key={index} >{item}</TableCell>
+                                    
+                                    <TableCell key={index} >{{item}.item}</TableCell>
                                 );
                             })}
                         </TableRow>

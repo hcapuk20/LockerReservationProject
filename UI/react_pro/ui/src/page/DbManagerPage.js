@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Checklist from "../components/Checklist";
-
+import Navbar from "../components/Navbar";
 
 //const { auth } = useAuth();
 //const user = auth.user;
@@ -253,6 +253,8 @@ function DbManagerPage() {
 
         }
         return (
+                <>
+                <Navbar landingPage={"DbManagerPage"}/>
                 <Container component="main" maxWidth="xs">
                         <Box sx={{
                                 marginTop: 8,
@@ -324,6 +326,7 @@ function DbManagerPage() {
                         </Button>
 
                 </Container>
+                </>
         )
 
 

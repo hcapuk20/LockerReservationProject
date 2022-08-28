@@ -1,37 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import axios from '../api/axios'
-import useAuth from "../auth/useAuth";
 import Button from '@mui/material/Button';
 
-//for each source group has a button for it 
-//if clicked, send request to backend ,navigate to contentspage 
-//send request to contents page
-//backend de buunu için ayrı fonksiyon yazılsa filet kısmına gerek kalmaz
 
 function SButton(props) {
 
     const navigate = useNavigate();
-    const { auth } = useAuth();
-    const adminGroups = auth.userData.sourceGroups;
 
 
     function getResources(buttonSourceGroup,buttonId) {
         
-        let isAuthorized =false;
-        console.log("adminGroups")
-        console.log(adminGroups)
-        console.log("adminGroups")
-        adminGroups.forEach(element => {
-            if(element.id === buttonId){
-                isAuthorized = true;
-            }   
-            
-        });
-
-        if(!isAuthorized){
-            props.setErrorMessage(true);
-            return;
-        }
 
         async function fetchData() {
             try {
@@ -54,7 +32,7 @@ function SButton(props) {
     
     }
     
-    return (<Button   variant='text'onClick={() => { getResources(props.name,props.buttonId) } }> {props.name}</Button>)
+    return (<Button   size="small" variant="outlined" onClick={() => { getResources(props.name,props.buttonId) } }> check source group</Button>)
 
 }
 
