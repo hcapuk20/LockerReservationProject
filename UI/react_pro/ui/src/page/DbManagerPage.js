@@ -1,9 +1,3 @@
-//import axios from "../api/axios";
-//import useAuth from "../auth/useAuth";
-// add delete update employee 
-// add delete update source group
-// add delete update source
-// can an employee multiple sources from the same source group
 import { useState } from "react";
 import axios from "../api/axios";
 import Modal from "../components/Modal";
@@ -16,9 +10,6 @@ import Container from '@mui/material/Container';
 import Checklist from "../components/Checklist";
 import Navbar from "../components/Navbar";
 
-//const { auth } = useAuth();
-//const user = auth.user;
-//console.log(auth)
 
 
 function DbManagerPage() {
@@ -30,116 +21,116 @@ function DbManagerPage() {
 
         const [operations, setOperations] = useState([
                 {
-                        functionName: "GetAllSources",
+                        functionName: "Get All Sources",
                         params: {},
                         type: "get",
                         url: "https://localhost:7125/api/Source/getAllSources"
                 },
                 {
-                        functionName: "AddSource",
+                        functionName: "Add Source",
                         params: { id: "", sg_id: "" },
                         type: "post",
                         url: "https://localhost:7125/api/Source/addSource?"
                 },
                 {
-                        functionName: "AddEmployee",
+                        functionName: "Add Employee",
                         params: { employee_id: "", password: "", name: "", role: "" },
                         type: "post",
                         url: "https://localhost:7125/api/Source/addEmployee?"
                 },
                 {
-                        functionName: "GetAllEmployees",
+                        functionName: "Get All Employees",
                         params: {},
                         type: "get",
                         url: "https://localhost:7125/api/Source/getAllEmployees"
                 },
                 {
-                        functionName: "GetEmployeeById",
+                        functionName: "Get Employee By Id",
                         params: { employee_id: "" },
                         type: "get",
                         url: "https://localhost:7125/api/Source/getEmployeeById?"
                 },
                 {
-                        functionName: "RemoveSource",
+                        functionName: "Remove Source",
                         params: { source_id: "" },
                         type: "delete",
                         url: "https://localhost:7125/api/Source/removeSource?"
                 },
                 {
-                        functionName: "RemoveEmployee",
+                        functionName: "Remove Employee",
                         params: { employee_id: "" },
                         type: "delete",
                         url: "https://localhost:7125/api/Source/removeEmployee?"
                 },
                 {
-                        functionName: "GetAllSourceGroups",
+                        functionName: "Get All Source Groups",
                         params: {},
                         type: "get",
                         url: "https://localhost:7125/api/Source/getAllSourceGroups"
                 },
                 {
-                        functionName: "AddSourceGroup",
+                        functionName: "Add Source Group",
                         params: { sourceGroup_id: "", name: "", cap: "" },
                         type: "post",
                         url: "https://localhost:7125/api/Source/addSourceGroup?"
                 },
                 {
-                        functionName: "AddRelationship",
+                        functionName: "Add Relationship",
                         params: { employee_id: "", source_id: "" },
                         type: "post",
                         url: "https://localhost:7125/api/Source/addRelationship?"
                 },
                 {
-                        functionName: "GetSourcesOfEmployee",
+                        functionName: "Get Sources Of Employee",
                         params: { employee_id: "" },
                         type: "get",
                         url: "https://localhost:7125/api/Source/getSourcesOfEmployee?"
                 },
                 {
-                        functionName: "GetOwnersOfSource",
+                        functionName: "Get Owners Of Source",
                         params: { source_id: "" },
                         type: "get",
                         url: "https://localhost:7125/api/Source/getOwnersOfSource?"
                 },
                 {
-                        functionName: "RemoveSourceGroup",
+                        functionName: "Remove Source Group",
                         params: { source_group_id: "" },
                         type: "delete",
                         url: "https://localhost:7125/api/Source/removeSourceGroup?"
                 },
                 {
-                        functionName: "RemoveRelationship",
+                        functionName: "Remove Relationship",
                         params: { employee_id: "", source_id: "" },
                         type: "delete",
                         url: "https://localhost:7125/api/Source/removeRelationship?"
                 },
                 {
-                        functionName: "AddAdministration",
+                        functionName: "Add Administration",
                         params: { employee_id: "", sg_id: "" },
                         type: "post",
                         url: "https://localhost:7125/api/Source/addAdministration?"
                 },
                 {
-                        functionName: "GetSourcesByGroup",
+                        functionName: "Get Sources By Group",
                         params: { group_id: "" },
                         type: "get",
                         url: "https://localhost:7125/api/Source/getSourcesByGroup?"
                 },
                 {
-                        functionName: "UpdateEmployee",
+                        functionName: "Update Employee",
                         params: {},
                         type: "put",
                         url: ""
                         //?????
                 },
                 {
-                        functionName: "UpdateSourceGroup",
+                        functionName: "Update Source Group",
                         params: { sg_id: "", former_id: "", emp_id: "" },
                         type: "put",
                         url: "https://localhost:7125/api/Source/updateSourceGroup?"
                 },
                 {
-                        functionName: "UpdateRelationship",
+                        functionName: "Update Relationship",
                         params: { emp_id: "", source_id: "", new_source_id: "" },
                         type: "put",
                         url: "https://localhost:7125/api/Source/updateRelationship?"
@@ -235,8 +226,8 @@ function DbManagerPage() {
         function handleEmployeeSubmit(arr) {
                 let position;
                 operations.forEach((element, index) => {
-                        console.log(element.functionName )
-                        if (element.functionName === 'AddEmployee') {
+              
+                        if (element.functionName === 'Add Employee') {
                                 position = index;
                         }
                 }
@@ -255,7 +246,7 @@ function DbManagerPage() {
         return (
                 <>
                 <Navbar landingPage={"DbManagerPage"}/>
-                <Container component="main" maxWidth="xs">
+                <Container component="main" >
                         <Box sx={{
                                 marginTop: 8,
                                 display: 'flex',
@@ -296,11 +287,12 @@ function DbManagerPage() {
                                                                 </Box>
                                                                 <Button
                                                                         type="submit"
-                                                                        fullWidth
+                                                                        maxWidth="lg"
+                                                                        size="large"
                                                                         variant="outlined"
                                                                         sx={{ mt: 2, mb: 1 }}
                                                                         onClick={(event) => {
-                                                                                operations[componentIndex].functionName === 'AddEmployee' ?
+                                                                                operations[componentIndex].functionName === 'Add Employee' ?
                                                                                         setCloseChecklist(true) :
                                                                                         handleSubmit(event, componentIndex)
 
@@ -312,19 +304,20 @@ function DbManagerPage() {
                                                 );
                                         })
                                 }
-                        </Box>
+                       
                         <Checklist closeChecklist={closeChecklist} setCloseChecklist={setCloseChecklist} handleEmployeeSubmit={handleEmployeeSubmit} ></Checklist>
                         <Modal modalData={modalData} closeModal={closeModal} ></Modal>
                         <Button
                                 type="submit"
-                                fullWidth
+                                maxWidth="lg"
+                                size="large"
                                 variant="contained"
                                 sx={{ mt: 2, mb: 1 }}
                                 onClick={() => { navigate("/navigationpage"); }}
                         >
                                 return back
                         </Button>
-
+                        </Box>
                 </Container>
                 </>
         )
