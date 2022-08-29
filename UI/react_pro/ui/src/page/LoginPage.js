@@ -69,7 +69,7 @@ function LoginPage() {
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                     {errorMessage &&
                         <Typography variant="h6" sx={{ margin: '15px' }}>
-                            Wrong name or password!
+                            Invalid id or password!
                         </Typography>}
                     <TextField
                         sx={{ margin: '6px' }}
