@@ -8,7 +8,7 @@ namespace LRProject.Service
 {
     public interface ISourceService
     {
-        Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string password, string role, string name, int sg_id);
+        Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string password, string role, string name, int[] sg_ids);
         Task<Response<List<ReturnEmployeeDTO>>> GetAllEmployees();
         Task<Response<ReturnEmployeeDTO>> GetEmployeeById(int employee_id);
         Task<Response<List<ReturnSourceDTO>>> GetAllSources();
@@ -24,7 +24,6 @@ namespace LRProject.Service
         Task<Response<ReturnEmployeeDTO>> RemoveRelationship(int employee_id, int source_id);
         Task<Response<ReturnEmployeeDTO>> AddAdministration(int employee_id, int sg_id);
         Task<Response<List<GetSourcesByGroupDTO>>> GetSourcesByGroup(int source_id);
-        Task<Response<ReturnEmployeeDTO>> UpdateEmployee(UpdateEmployeeDTO request);
         Task<Response<ReturnSourceGroupDTO>> UpdateSourceGroup(int sg_id, int former_emp_id, int employee_id);
         Task<Response<ReturnEmployeeDTO>> UpdateRelationship(int employee_id, int source_id, int new_source_id);
         Task<Response<ReturnEmployeeDTO>> AddAutoRelationship(int employee_id, int sg_id);
