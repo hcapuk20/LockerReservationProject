@@ -12,7 +12,7 @@ import axios from '../api/axios';
 
 const React = require("react")
 function LoginPage() {
-    const [formData, setFormData] = React.useState({ firstName: "", passWord: "" });  //değiştir! - bak 
+    const [formData, setFormData] = React.useState({ firstName: "", passWord: "" }); 
     const [errorMessage, setErrorMessage] = React.useState(false);
     const { setAuth } = useAuth();
     const navigate = useNavigate();

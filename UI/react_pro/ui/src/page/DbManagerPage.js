@@ -18,6 +18,7 @@ function DbManagerPage() {
 
         const [modalData, setModalData] = useState({ openModal: false, attributeKeys: "", attributeData: "" });
         const [closeChecklist, setCloseChecklist] = useState(false)
+        const [addedGroups, setAddedGroup] = useState([]);
 
         const [operations, setOperations] = useState([
                 {
@@ -117,13 +118,6 @@ function DbManagerPage() {
                         url: "https://localhost:7125/api/Source/getSourcesByGroup?"
                 },
                 {
-                        functionName: "Update Employee",
-                        params: {},
-                        type: "put",
-                        url: ""
-                        //?????
-                },
-                {
                         functionName: "Update Source Group",
                         params: { sg_id: "", former_id: "", emp_id: "" },
                         type: "put",
@@ -211,114 +205,149 @@ function DbManagerPage() {
                 } else {
                         getData(position).then((response) => {
                                 alert(response.data.message)
-                        }).catch((err) => { 
+                        }).catch((err) => {
                                 if (err.response) {
                                         alert("unkown error");
-                                      } else if (err.request) {
+                                } else if (err.request) {
                                         alert("error: no response received");
-                                      } else {
+                                } else {
                                         alert("unkown error");
-                                      }
-                                      
-                               return; })
+                                }
+
+                                return;
+                        })
                 }
         }
-        function handleEmployeeSubmit(arr) {
+        async function handleEmployeeSubmit(arr) {
                 let position;
                 operations.forEach((element, index) => {
-              
+
                         if (element.functionName === 'Add Employee') {
                                 position = index;
                         }
                 }
                 );
-                console.log(position)
-                axios({
-                        method: operations[position].type,
-                        url: operations[position].url,
-                        data: {
-                                arr: arr,
-                                params: operations[position].params
+                let params = operations[position].params
+                console.log(params)
+                let url = operations[position].url;
+                if (Object.keys(params).length !== 0) {
+                        Object.keys(params).map((item) => {
+                                url = url.concat(item, "=", (params[item]), "&");
+                                return 0;
                         }
+                        )
+                        url = url.slice(0, url.length - 1)
+                }
+
+                await axios({
+                        method: operations[position].type,
+                        url: url,
+                        data: arr
+                }).then(function (response) {
+                        console.log(response)
+                        if (response.data.statusCode === 200) {   //buna bak bir ara
+                                setAddedGroup([])
+                                setCloseChecklist(false)
+                                alert("employee already exists!")
+                        }
+                        let addedSourceGroups = response.data.data.sources;  // returned array might be empty
+                        console.log(addedSourceGroups)
+                        if (addedSourceGroups.length !== 0) {
+                                setAddedGroup(addedSourceGroups)
+                        } else {
+                                setAddedGroup(["-1"])
+                        }
+
+
+                }).catch(function (error) {
+                        alert("unkown error!")
+                        console.log(error);
                 });
 
         }
         return (
                 <>
-                <Navbar landingPage={"DbManagerPage"}/>
-                <Container component="main" >
-                        <Box sx={{
-                                marginTop: 8,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                        }}>
-                                {
-                                        operations.map((item, componentIndex) => {
-                                                return (
-                                                        <>
-                                                                <Typography variant="h3" gutterBottom sx={{ margin: 5 }} >
-                                                                        {item.functionName}
-                                                                </Typography>
-                                                                <Box sx={{
+                        <Navbar landingPage={"DbManagerPage"} />
+                        <Container component="main" >
+                                <Box sx={{
+                                        marginTop: 8,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                }}>
+                                        {
+                                                operations.map((item, componentIndex) => {
+                                                        return (
+                                                                <>
+                                                                        <Typography variant="h3" gutterBottom sx={{ margin: 5 }} >
+                                                                                {item.functionName}
+                                                                        </Typography>
+                                                                        <Box sx={{
 
-                                                                        display: 'flex',
-                                                                        flexDirection: 'row',
-                                                                        alignItems: 'center',
-                                                                }}>
-                                                                        {Object.keys(item.params).map((parameter, index) => {
+                                                                                display: 'flex',
+                                                                                flexDirection: 'row',
+                                                                                alignItems: 'center',
+                                                                        }}>
+                                                                                {Object.keys(item.params).map((parameter, index) => {
 
-                                                                                return (
-                                                                                        <TextField
-                                                                                                required
-                                                                                                fullwidth
-                                                                                                type="text"
-                                                                                                sx={{ mt: 2, mb: 1 }}
-                                                                                                placeholder={parameter}
-                                                                                                name={parameter}
-                                                                                                onChange={(event) =>
-                                                                                                        handleInput(event, componentIndex)
-                                                                                                }
+                                                                                        return (
+                                                                                                <TextField
+                                                                                                        required
+                                                                                                        fullwidth
+                                                                                                        type="text"
+                                                                                                        sx={{ mt: 2, mb: 1 }}
+                                                                                                        placeholder={parameter}
+                                                                                                        name={parameter}
+                                                                                                        onChange={(event) =>
+                                                                                                                handleInput(event, componentIndex)
+                                                                                                        }
 
-                                                                                                value={item.params[index]}
-                                                                                        />
-                                                                                );
-                                                                        })}
-                                                                </Box>
-                                                                <Button
-                                                                        type="submit"
-                                                                        maxWidth="lg"
-                                                                        size="large"
-                                                                        variant="outlined"
-                                                                        sx={{ mt: 2, mb: 1 }}
-                                                                        onClick={(event) => {
-                                                                                operations[componentIndex].functionName === 'Add Employee' ?
-                                                                                        setCloseChecklist(true) :
-                                                                                        handleSubmit(event, componentIndex)
+                                                                                                        value={item.params[index]}
+                                                                                                />
+                                                                                        );
+                                                                                })}
+                                                                        </Box>
+                                                                        <Button
+                                                                                type="submit"
+                                                                                maxWidth="lg"
+                                                                                size="large"
+                                                                                variant="outlined"
+                                                                                sx={{ mt: 2, mb: 1 }}
+                                                                                onClick={(event) => {
+                                                                                        operations[componentIndex].functionName === 'Add Employee' ?
+                                                                                                setCloseChecklist(true) :
+                                                                                                handleSubmit(event, componentIndex)
 
-                                                                        }}
-                                                                >
-                                                                        Submit
-                                                                </Button>
-                                                        </>
-                                                );
-                                        })
-                                }
-                       
-                        <Checklist closeChecklist={closeChecklist} setCloseChecklist={setCloseChecklist} handleEmployeeSubmit={handleEmployeeSubmit} ></Checklist>
-                        <Modal modalData={modalData} closeModal={closeModal} ></Modal>
-                        <Button
-                                type="submit"
-                                maxWidth="lg"
-                                size="large"
-                                variant="contained"
-                                sx={{ mt: 2, mb: 1 }}
-                                onClick={() => { navigate("/navigationpage"); }}
-                        >
-                                return back
-                        </Button>
-                        </Box>
-                </Container>
+                                                                                }}
+                                                                        >
+                                                                                Submit
+                                                                        </Button>
+                                                                </>
+                                                        );
+                                                })
+                                        }
+
+                                        <Checklist
+                                                closeChecklist={closeChecklist}
+                                                setCloseChecklist={setCloseChecklist}
+                                                handleEmployeeSubmit={handleEmployeeSubmit}
+                                                addedGroups={addedGroups}
+                                                setAddedGroup={setAddedGroup}
+                                        >
+                                        </Checklist>
+                                        <Modal modalData={modalData} closeModal={closeModal} ></Modal>
+                                        <Button
+                                                type="submit"
+                                                maxWidth="lg"
+                                                size="large"
+                                                variant="contained"
+                                                sx={{ mt: 2, mb: 1 }}
+                                                onClick={() => { navigate("/navigationpage"); }}
+                                        >
+                                                return back
+                                        </Button>
+                                </Box>
+                        </Container>
                 </>
         )
 
