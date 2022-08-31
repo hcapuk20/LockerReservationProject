@@ -44,9 +44,9 @@ namespace LRProject.Controllers
         [HttpPost]
         [Route("addEmployee")]
 
-        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddEmployee(int employee_id, string name, string password, string role, int sg_id)
+        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> AddEmployee(int employee_id, string name, string password, string role, int[] sg_ids)
         {
-            return Ok(await _ISourceService.AddEmployee(employee_id, name, password, role, sg_id));
+            return Ok(await _ISourceService.AddEmployee(employee_id, name, password, role, sg_ids));
         }
         [HttpDelete]
         [Route("removeEmployee")]
@@ -158,14 +158,6 @@ namespace LRProject.Controllers
             return Ok(await _ISourceService.AddAdministration(employee_id, sg_id));
         }
 
-        [HttpPut]
-        [Route("updateEmployee")]
-        [Authorize(Roles = "DbManager")]
-
-        public async Task<ActionResult<Response<ReturnEmployeeDTO>>> UpdateEmployee(UpdateEmployeeDTO request)
-        {
-            return Ok(await _ISourceService.UpdateEmployee(request));
-        }
         [HttpPut]
         [Route("updateSourceGroup")]
         [Authorize(Roles = "DbManager")]
