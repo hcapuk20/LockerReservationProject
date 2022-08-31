@@ -82,7 +82,7 @@ namespace LRProject.Service
             };
             return response;
         }
-        public async Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string name, string password, string role, int sg_id)
+        public async Task<Response<ReturnEmployeeDTO>> AddEmployee(int employee_id, string name, string password, string role, int[] sg_ids)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(x => x.Id == employee_id);
             Employee newEmployee = new Employee() { Id = employee_id, Name = name, Password = password, Role = role, Status = 1 };
@@ -107,17 +107,13 @@ namespace LRProject.Service
                 };
             }
             await _context.SaveChangesAsync();
-            var sourceAdded = await AddAutoRelationship(employee_id, sg_id);
-            var req = await GetEmployeeById(employee_id);
-            if (sourceAdded.StatusCode == 404)
+            foreach (int sg_id in sg_ids)
             {
-                return new Response<ReturnEmployeeDTO>()
-                {
-                    Data = req.Data,
-                    StatusCode = 201,
-                    Message = "New employee added, but no available source found in the given group."
-                };
+                await AddAutoRelationship(employee_id, sg_id);
             }
+
+
+            var req = await GetEmployeeById(employee_id);
             var response = new Response<ReturnEmployeeDTO>()
             {
                 Data = req.Data,
@@ -591,34 +587,7 @@ namespace LRProject.Service
             return response;
         }
 
-        public async Task<Response<ReturnEmployeeDTO>> UpdateEmployee(UpdateEmployeeDTO request)
-        {
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == request.Id && e.Status == 1);
-            if (employee == null)
-            {
-                return new Response<ReturnEmployeeDTO>()
-                {
-                    Data = null,
-                    StatusCode = 404,
-                    Message = "Employee could not be found."
-                };
-            }
-            employee.Name = request.Name;
-            employee.Role = request.Role;
-            await _context.SaveChangesAsync();
-            var empDTO = _mapper.Map<ReturnEmployeeDTO>(employee);
-            var sources = await _context.EmployeeSources.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
-            var sgs = await _context.EmployeeSourcesGroups.Where(es => es.EmployeeId == empDTO.Id && es.Status == 1).ToListAsync();
-            empDTO.Sources = _mapper.Map<List<ReturnSourceDTO>>(sources);
-            empDTO.SourceGroups = _mapper.Map<List<ReturnSourceGroupDTO>>(sgs);
-            var response = new Response<ReturnEmployeeDTO>()
-            {
-                Data = empDTO,
-                StatusCode = 200,
-                Message = "Success, employee updated."
-            };
-            return response;
-        }
+
 
         public async Task<Response<ReturnSourceGroupDTO>> UpdateSourceGroup(int sg_id, int former_emp_id, int employee_id)
         {
