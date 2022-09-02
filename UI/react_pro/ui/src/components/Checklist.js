@@ -20,9 +20,6 @@ export default function CheckboxesGroup({ closeChecklist, handleEmployeeSubmit, 
     const [sourceGroups, setSourceGroups] = useState([]);
     const [checked, setChecked] = useState([]);
     const [groupsToShow, setGroupsToShow] = useState(addedGroups);
-    console.log("groupsToShow")
-    console.log(groupsToShow)
-    console.log("groupsToShow")
 
     useEffect(() => {
         setGroupsToShow(addedGroups)
@@ -69,12 +66,11 @@ export default function CheckboxesGroup({ closeChecklist, handleEmployeeSubmit, 
         let element;
          sourceGroups.forEach((source)=>{
              if(source.id === itemId){
-                 console.log("here")
                  element =  source.name;
              }
          }
          )
-         console.log(element)
+        
          return (<TableCell> {element} </TableCell>);
     }
 

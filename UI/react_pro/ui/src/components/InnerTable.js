@@ -14,7 +14,7 @@ import EditRow from './EditRow';
 function InnerTable({ item_id }) {
     const [data, setData] = useState();
     const [render, setRender] = useState(false);
-    console.log(render)
+
 
 
     useEffect(() => {

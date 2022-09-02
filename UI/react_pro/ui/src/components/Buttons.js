@@ -16,7 +16,6 @@ function Buttons() {
 
 
 
-
     if (accesibleGroups.length !== 0) {
         return (
             <>

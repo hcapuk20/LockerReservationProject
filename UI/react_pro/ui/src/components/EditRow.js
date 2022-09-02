@@ -9,8 +9,6 @@ import Typography from '@mui/material/Typography';
 const React = require("react")
 
 
-////inputlara type check yapman lazım!!!
-
 function EditRow({ source_id, renderMethod }) {
 
 
@@ -29,10 +27,7 @@ function EditRow({ source_id, renderMethod }) {
 
     function HandleInput(event) {
         setMessage("")
-        console.log(event.target)
         const { name, value } = event.target
-        console.log(name)
-        console.log(value)
         setFormData((prevData) => {
             return {
                 ...prevData,

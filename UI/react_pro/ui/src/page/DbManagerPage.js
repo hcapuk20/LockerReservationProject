@@ -191,7 +191,7 @@ function DbManagerPage() {
                                         arr.push(foundData);
                                         foundData = arr;
                                 }
-                                console.log(foundData)
+                           
 
                                 setModalData({
                                         openModal: true,
@@ -228,7 +228,7 @@ function DbManagerPage() {
                 }
                 );
                 let params = operations[position].params
-                console.log(params)
+           
                 let url = operations[position].url;
                 if (Object.keys(params).length !== 0) {
                         Object.keys(params).map((item) => {
@@ -244,14 +244,14 @@ function DbManagerPage() {
                         url: url,
                         data: arr
                 }).then(function (response) {
-                        console.log(response)
+                       
                         if (response.data.statusCode === 200) {   //buna bak bir ara
                                 setAddedGroup([])
                                 setCloseChecklist(false)
                                 alert("employee already exists!")
                         }
                         let addedSourceGroups = response.data.data.sources;  // returned array might be empty
-                        console.log(addedSourceGroups)
+                        
                         if (addedSourceGroups.length !== 0) {
                                 setAddedGroup(addedSourceGroups)
                         } else {

@@ -32,7 +32,7 @@ function Modal({ modalData, closeModal }) {
     if (!modalData.openModal) {
         return
     }
-    console.log(modalData.attributeKeys)
+
 
 
 
@@ -40,13 +40,13 @@ function Modal({ modalData, closeModal }) {
     return (
         <div>
 
-<Dialog
-        open={modalData.openModal}
-        onClose={closeModal}
-        maxWidth="xl"
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-      >
+            <Dialog
+                open={modalData.openModal}
+                onClose={closeModal}
+                maxWidth="xl"
+                aria-labelledby="scroll-dialog-title"
+                aria-describedby="scroll-dialog-description"
+            >
                 <Typography variant="h2" gutterBottom >
                     Returned Result:
                 </Typography>
@@ -62,8 +62,7 @@ function Modal({ modalData, closeModal }) {
                         </TableHead>
                         <TableBody>
                             {modalData.attributeData.map((item) => {
-                                console.log(Object.values(item))
-
+                            
                                 return (
                                     <TableRow>
                                         {Object.values(item).map((value) => {

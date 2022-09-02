@@ -9,11 +9,28 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import useAuth from "../auth/useAuth";
+import axios from '../api/axios';
+import React, { useState, useEffect } from "react"
 function NonAdminPage() {
+    const [sources, setSources] = useState([]);
+
+    const { auth } = useAuth();
 
 
+    useEffect(() => {
 
-    function findAttributes(item) {   //buraları değiştir
+        async function fetchData() {
+            try {
+                const response = await axios.get(`https://localhost:7125/api/Source/getSourcesOfEmployee?employee_id=${auth.firstName}`)
+                setSources(response.data.data)
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchData();
+    }, [auth.firstName]);
+
+    function findAttributes(item) {
 
         const attr = []
         for (const [, value] of Object.entries(item)) {
@@ -26,8 +43,8 @@ function NonAdminPage() {
     }
 
 
-    const { auth } = useAuth();
-    const sources = auth.userData.sources;
+
+
     let attributeNames;
     try {
         attributeNames = Object.keys(sources[0])

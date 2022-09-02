@@ -80,6 +80,7 @@ function LoginPage() {
                         name="firstName"
                         onChange={HandleInput}
                         value={formData.firstName}
+                        autoComplete="user-id"
                     />
                     <TextField
                         sx={{ margin: '6px' }}
@@ -90,6 +91,7 @@ function LoginPage() {
                         name="passWord"
                         onChange={HandleInput}
                         value={formData.passWord}
+                        autoComplete="current-password"
                     />
                     <Button
                         type="submit"
