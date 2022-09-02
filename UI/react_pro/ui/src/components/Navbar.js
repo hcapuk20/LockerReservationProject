@@ -16,7 +16,6 @@ function Navbar({ landingPage }) {
     const { auth } = useAuth();
     const { setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
-    const accesibleGroups = auth.userData.sourceGroups;
     const logout = async () => {
         setAuth({});
         navigate('/');
