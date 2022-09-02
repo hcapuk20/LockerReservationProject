@@ -61,7 +61,7 @@ function Navbar({ landingPage }) {
                             }
 
                         </Button>}
-                        {({ landingPage }.landingPage !== "HomePage") && (accesibleGroups.length !== 0)&&
+                        {({ landingPage }.landingPage !== "HomePage") &&
                         <Button variant="outlined" sx={{ width: 200, margin: 0, color: '#fff', my: 2 }} onClick={() => {
                             
                                 navigate("/navigationpage")
@@ -75,7 +75,7 @@ function Navbar({ landingPage }) {
 
 
 
-                    {auth.userData.role === 'DbManager' &&
+                    {auth.userData.role === 'DbManager' &&({ landingPage }.landingPage !== "DbManagerPage")&&
                         <Button variant="outlined" sx={{ width: 180, margin: 0, color: '#fff', my: 2 }} onClick={checkRole}  >
                             Manage database
                         </Button>}
