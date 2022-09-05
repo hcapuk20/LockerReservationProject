@@ -97,7 +97,7 @@ function EditRow({ source_id, renderMethod }) {
                                 name={item}
                                 onChange={HandleInput}
                                 value={formData[index]}
-                                key={index} //bak
+                                key={index} 
                             />
                         );
                     })}

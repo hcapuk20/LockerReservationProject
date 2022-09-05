@@ -14,6 +14,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import InnerTable from "../components/InnerTable";
 import { useState } from "react";
 import Navbar from '../components/Navbar';
+import { indigo } from '@mui/material/colors'
+
+
 function ContentsPage() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -37,9 +40,7 @@ function ContentsPage() {
                 <button onClick={() => { navigate("/admin") }}> return back</button>
             </div>);
     }
-    const attrArray = Object.keys(arrayWithData[0]);
-    attrArray.push('actions');
-console.log(attrArray)
+
 
 
 
@@ -68,18 +69,15 @@ console.log(attrArray)
 
     return (
         <div>
-            <Navbar landingPage={`Contents of "${location.state.buttonSourceGroup}" :`}/>
-            <TableContainer component={Paper} sx={{ mt: 4,ml: 4, width: 9 / 10 }} >
+            <Navbar landingPage={`Contents of "${location.state.buttonSourceGroup}" `}/>
+            <TableContainer component={Paper} sx={{ mt: 4,ml: 4, width: 9 / 10 , border:  '2px solid ' ,borderColor: indigo[400] }} >
                 <Table >
                     <TableHead>
-                        <TableRow >
-                            {attrArray.map((item, index) => {
-                                console.log({item}.item)
-                                return (
-                                    
-                                    <TableCell key={index} >{{item}.item}</TableCell>
-                                );
-                            })}
+                        <TableRow >	
+                        <TableCell>Id</TableCell>
+                        <TableCell>Source Group Id</TableCell>
+                        <TableCell>Space</TableCell>
+                        <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody  >
@@ -99,7 +97,7 @@ console.log(attrArray)
                                                 alignItems: 'center',
                                             }}>
                                                 <Button size="small" variant="outlined" sx={{ margin: 1 }} onClick={() => showContent(index)} >
-                                                    show content
+                                                    Show content
                                                 </Button>
                                             </Box>
 
@@ -125,8 +123,8 @@ console.log(attrArray)
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Button size="small" variant="outlined" sx={{ margin: 4 }} onClick={() => { navigate("/admin"); }} >
-                return to admin page
+            <Button size="small"   variant="contained"sx={{ margin: 4 }} onClick={() => { navigate("/admin"); }} >
+                Return to admin page
             </Button>
 
 

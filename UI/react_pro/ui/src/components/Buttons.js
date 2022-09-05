@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import useAuth from '../auth/useAuth';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
-
+import { indigo } from '@mui/material/colors'
 function Buttons() {
     const { auth } = useAuth();
     const accesibleGroups = auth.userData.sourceGroups;
@@ -23,7 +23,7 @@ function Buttons() {
                     Source Groups
                 </Typography>
 
-                <TableContainer component={Paper} sx={{ mt: 4, ml: 4, width: 9 / 10 }} >
+                <TableContainer component={Paper} sx={{ mt: 4, ml: 4, width: 9 / 10,border: '2px solid ',borderColor: indigo[400] }} >
                     <Table >
                         <TableHead>
                             <TableRow>

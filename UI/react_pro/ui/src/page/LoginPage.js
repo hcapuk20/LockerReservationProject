@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 import useAuth from '../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
-
+import { indigo } from '@mui/material/colors'
 
 const React = require("react")
 function LoginPage() {
@@ -53,7 +53,7 @@ function LoginPage() {
     }
 
     return (
-        <Box>
+        <Box sx={{ alignItems: 'center' }}>
             <Container component="main" maxWidth="xs"  >
                 <Box
                     sx={{
@@ -72,7 +72,10 @@ function LoginPage() {
                                 Invalid id or password!
                             </Typography>}
                         <TextField
-                            sx={{ margin: '6px' }}
+                            sx={{
+                                margin: '6px', bgcolor: '#FFFFFF', borderRadius: '6px',
+                                "& fieldset": { border: '2px solid ', borderColor: indigo[400] },
+                            }}
                             required
                             fullWidth
                             type="text"
@@ -83,12 +86,16 @@ function LoginPage() {
                             autoComplete="user-id"
                         />
                         <TextField
-                            sx={{ margin: '6px' }}
+                            sx={{
+                                margin: '6px', bgcolor: '#FFFFFF', borderRadius: '6px',
+                                "& fieldset": { border: '2px solid ', borderColor: indigo[400] },
+                            }}
                             required
                             fullWidth
                             type="password"
                             placeholder="password"
                             name="passWord"
+                            InputProps={{ disableUnderline: true }}
                             onChange={HandleInput}
                             value={formData.passWord}
                             autoComplete="current-password"
@@ -97,15 +104,15 @@ function LoginPage() {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{ margin: '6px', mt: 3, mb: 2 }}
                         >
                             Sign In
                         </Button>
                     </Box>
                 </Box>
             </Container>
-            </Box >
-            );
+        </Box >
+    );
 }
 
-            export default LoginPage;
+export default LoginPage;

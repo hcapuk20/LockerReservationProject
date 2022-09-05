@@ -15,6 +15,7 @@ function AdminPage() {
 
                 <Navbar landingPage={"AdminPage"} />
                 <Box sx={{
+                    
                     marginTop: 4,
                     display: 'flex',
                     flexDirection: 'column',

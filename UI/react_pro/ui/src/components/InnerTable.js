@@ -39,8 +39,8 @@ function InnerTable({ item_id }) {
                         <TableRow sx={{
                                         borderBottom: "1px solid black"
                                     }}>
-                            <TableCell>id</TableCell>
-                            <TableCell>name</TableCell>
+                            <TableCell>Id</TableCell>
+                            <TableCell>Name</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

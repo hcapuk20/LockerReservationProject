@@ -295,7 +295,7 @@ function DbManagerPage() {
                                                                                                         required
                                                                                                         fullwidth
                                                                                                         type="text"
-                                                                                                        sx={{ mt: 2, mb: 1 }}
+                                                                                                        sx={{ mt: 2, mb: 1 ,bgcolor: '#FFFFFF'}}
                                                                                                         placeholder={parameter}
                                                                                                         name={parameter}
                                                                                                         onChange={(event) =>
@@ -311,7 +311,7 @@ function DbManagerPage() {
                                                                                 type="submit"
                                                                                 maxWidth="lg"
                                                                                 size="large"
-                                                                                variant="outlined"
+                                                                                variant="contained"
                                                                                 sx={{ mt: 2, mb: 1 }}
                                                                                 onClick={(event) => {
                                                                                         operations[componentIndex].functionName === 'Add Employee' ?

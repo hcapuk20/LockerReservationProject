@@ -13,6 +13,9 @@ import axios from '../api/axios';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import React, { useState, useEffect } from "react"
 import ArticleIcon from '@mui/icons-material/Article';
+import Box from '@mui/material/Box';
+import { indigo } from '@mui/material/colors'
+
 function NonAdminPage() {
     const [sources, setSources] = useState([]);
     const [sourceGroups ,setSourceGroups] =  useState([]);
@@ -107,22 +110,26 @@ function NonAdminPage() {
 
 
     return (
-        <div>
-            <Typography variant="h3" gutterBottom sx={{ margin: 5 }} >
-                Owned Sources:
+        <Box  sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        }}>
+            <Typography variant="h3" gutterBottom sx={{ margin: 3 }} >
+                Owned Sources
             </Typography>
-            <TableContainer component={Paper} sx={{ margin: 5, width: 9 / 10 }} >
+            <TableContainer component={Paper} sx={{ margin: 1, width: 490 , border: '2px solid ',borderColor: indigo[400]} } >
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
                             {attributeNames.map((item) => {
 
                                 if(item === 'sourceGroupId'){
-                                    return (<TableCell>name</TableCell>);
+                                    return (<TableCell>Name</TableCell>);
                                 }else if(item === 'space'){
                                     return(<></>);
                                 }else{
-                                    return (<TableCell>{item}</TableCell>);
+                                    return (<TableCell>Id</TableCell>);
                                 }
                                 
                             })}
@@ -142,7 +149,7 @@ function NonAdminPage() {
                 </Table >
 
             </TableContainer>
-        </div>
+        </Box>
     );
 }
 
