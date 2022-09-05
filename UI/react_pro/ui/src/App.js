@@ -5,9 +5,33 @@ import NavigationPage from './page/NavigationPage';
 import RequireAuth from './components/RequireAuth';
 import ContentsPage from './page/ContentsPage';
 import DbManagerPage from './page/DbManagerPage';
-//
+import { CssBaseline } from '@mui/material/';
+
+
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+
+
+const themeDark = createTheme({
+/*  palette: {
+    secondary: {
+      main:'#dc1111',
+    },
+    primary: {
+      main: '#dc1111',
+    },
+        background: {
+      default: '#696969',
+       paper: '#222283',
+    }
+  },*/
+});
+
+
 function App() {
   return (
+
+    <ThemeProvider theme={themeDark}>
+      <CssBaseline enableColorScheme />
     <Routes>
       <Route path="/" element={<LoginPage />} />
        <Route element={<RequireAuth />} >
@@ -18,6 +42,7 @@ function App() {
       </Route>
       <Route path="*" element={<LoginPage />} />
     </Routes>
+    </ThemeProvider>
   );
 }
 

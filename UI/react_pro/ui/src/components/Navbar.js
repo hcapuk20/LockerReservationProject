@@ -8,7 +8,7 @@ import AuthContext from "../context/AuthProvider";
 import useAuth from '../auth/useAuth';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-
+import FiberDvrIcon from '@mui/icons-material/FiberDvr';
 
 
 function Navbar({ landingPage }) {
@@ -41,9 +41,16 @@ function Navbar({ landingPage }) {
                     justifyContent: "space-between"
                 }}
             >
-                <Typography variant="h5" gutterBottom sx={{ width: 450, margin: 3, color: '#fff', my: 2 }}>
-                    {landingPage}
-                </Typography>
+                <Box sx={{
+                    display: { xs: "none", md: "flex" }
+                }}>
+                    <FiberDvrIcon sx={{ width: 50, mt: 2.5, ml:0 ,mr:0 }} />
+                    <Typography variant="h5" sx={{ width: 450, margin: 2, color: '#fff', my: 2, ml: 1}}>
+
+                        {landingPage}
+
+                    </Typography>
+                </Box>
                 <Box
                     sx={{
                         display: { xs: "none", md: "flex" }
@@ -51,20 +58,20 @@ function Navbar({ landingPage }) {
                 >
                     {({ landingPage }.landingPage === "HomePage") &&
                         <Button variant="outlined" sx={{ width: 200, margin: 0, color: '#fff', my: 2 }} onClick={() => {
-                            
-                                navigate("/admin")
-                            
+
+                            navigate("/admin")
+
                         }} >
                             {
                                 " Go to the Admin page"
                             }
 
                         </Button>}
-                        {({ landingPage }.landingPage !== "HomePage") &&
+                    {({ landingPage }.landingPage !== "HomePage") &&
                         <Button variant="outlined" sx={{ width: 200, margin: 0, color: '#fff', my: 2 }} onClick={() => {
-                            
-                                navigate("/navigationpage")
-                        
+
+                            navigate("/navigationpage")
+
                         }} >
                             {
                                 " Go to home page"
@@ -74,7 +81,7 @@ function Navbar({ landingPage }) {
 
 
 
-                    {auth.userData.role === 'DbManager' &&({ landingPage }.landingPage !== "DbManagerPage")&&
+                    {auth.userData.role === 'DbManager' && ({ landingPage }.landingPage !== "DbManagerPage") &&
                         <Button variant="outlined" sx={{ width: 180, margin: 0, color: '#fff', my: 2 }} onClick={checkRole}  >
                             Manage database
                         </Button>}

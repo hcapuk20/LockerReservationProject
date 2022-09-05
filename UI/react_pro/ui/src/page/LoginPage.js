@@ -12,7 +12,7 @@ import axios from '../api/axios';
 
 const React = require("react")
 function LoginPage() {
-    const [formData, setFormData] = React.useState({ firstName: "", passWord: "" }); 
+    const [formData, setFormData] = React.useState({ firstName: "", passWord: "" });
     const [errorMessage, setErrorMessage] = React.useState(false);
     const { setAuth } = useAuth();
     const navigate = useNavigate();
@@ -53,59 +53,59 @@ function LoginPage() {
     }
 
     return (
-
-        <Container component="main" maxWidth="xs">
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography variant="h2" sx={{ margin: '15px' }}>
-                    Sign in
-                </Typography>
-                <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                    {errorMessage &&
-                        <Typography variant="h6" sx={{ margin: '15px' }}>
-                            Invalid id or password!
-                        </Typography>}
-                    <TextField
-                        sx={{ margin: '6px' }}
-                        required
-                        fullWidth
-                        type="text"
-                        placeholder="id"
-                        name="firstName"
-                        onChange={HandleInput}
-                        value={formData.firstName}
-                        autoComplete="user-id"
-                    />
-                    <TextField
-                        sx={{ margin: '6px' }}
-                        required
-                        fullWidth
-                        type="password"
-                        placeholder="passWord"
-                        name="passWord"
-                        onChange={HandleInput}
-                        value={formData.passWord}
-                        autoComplete="current-password"
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
-                        Sign In
-                    </Button>
+        <Box>
+            <Container component="main" maxWidth="xs"  >
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography variant="h2" sx={{ margin: '15px' }}>
+                        Sign in
+                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                        {errorMessage &&
+                            <Typography variant="h6" sx={{ margin: '15px' }}>
+                                Invalid id or password!
+                            </Typography>}
+                        <TextField
+                            sx={{ margin: '6px' }}
+                            required
+                            fullWidth
+                            type="text"
+                            placeholder="id"
+                            name="firstName"
+                            onChange={HandleInput}
+                            value={formData.firstName}
+                            autoComplete="user-id"
+                        />
+                        <TextField
+                            sx={{ margin: '6px' }}
+                            required
+                            fullWidth
+                            type="password"
+                            placeholder="password"
+                            name="passWord"
+                            onChange={HandleInput}
+                            value={formData.passWord}
+                            autoComplete="current-password"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                    </Box>
                 </Box>
-            </Box>
-        </Container>
-
-    );
+            </Container>
+            </Box >
+            );
 }
 
-export default LoginPage;
+            export default LoginPage;
