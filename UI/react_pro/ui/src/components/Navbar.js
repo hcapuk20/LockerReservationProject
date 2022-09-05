@@ -45,7 +45,7 @@ function Navbar({ landingPage }) {
                     display: { xs: "none", md: "flex" }
                 }}>
                     <FiberDvrIcon sx={{ width: 50, mt: 2.5, ml:0 ,mr:0 }} />
-                    <Typography variant="h5" sx={{ width: 450, margin: 2, color: '#fff', my: 2, ml: 1}}>
+                    <Typography variant="h5" sx={{ width: 450, margin: 1.5, color: '#fff', my: 2, ml: 1}}>
 
                         {landingPage}
 
@@ -57,7 +57,7 @@ function Navbar({ landingPage }) {
                     }}
                 >
                     {({ landingPage }.landingPage === "HomePage") &&
-                        <Button variant="outlined" sx={{ width: 200, margin: 0, color: '#fff', my: 2 }} onClick={() => {
+                        <Button variant="outlined" sx={{ width: 300, margin: 0, color: '#fff', my: 2 }} onClick={() => {
 
                             navigate("/admin")
 
@@ -68,7 +68,7 @@ function Navbar({ landingPage }) {
 
                         </Button>}
                     {({ landingPage }.landingPage !== "HomePage") &&
-                        <Button variant="outlined" sx={{ width: 200, margin: 0, color: '#fff', my: 2 }} onClick={() => {
+                        <Button variant="outlined" sx={{ width: 300, margin: 0, color: '#fff', my: 2 }} onClick={() => {
 
                             navigate("/navigationpage")
 
