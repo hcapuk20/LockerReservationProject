@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
-
+import Box from '@mui/material/Box';
 function Modal({ modalData, closeModal }) {
 
     function convertToString(value) {
@@ -38,21 +38,22 @@ function Modal({ modalData, closeModal }) {
 
 
     return (
-        <div>
+        <Box   >
 
             <Dialog
+                
                 open={modalData.openModal}
                 onClose={closeModal}
-                maxWidth="xl"
                 aria-labelledby="scroll-dialog-title"
-                aria-describedby="scroll-dialog-description"
+               
             >
-                <Typography variant="h2" gutterBottom >
+                <Box sx= {{width : 700}}>
+                <Typography variant="h3"  >
                     Returned Result:
                 </Typography>
 
-                <TableContainer>
-                    <Table aria-label="collapsible table">
+                <TableContainer >
+                    <Table >
                         <TableHead>
                             <TableRow>
                                 {modalData.attributeKeys.map((item) => {
@@ -87,9 +88,9 @@ function Modal({ modalData, closeModal }) {
                 <Button variant="outlined" sx={{ width: 300, margin: 5 }} onClick={closeModal} >
                     Close Modal
                 </Button>
-
+                </Box>
             </Dialog>
-        </div>
+        </Box>
 
 
     );

@@ -76,7 +76,7 @@ function DbManagerPage() {
                         url: "https://localhost:7125/api/Source/addSourceGroup?"
                 },
                 {
-                        functionName: "Add Relationship",
+                        functionName: "Assign Source To Employee",
                         params: { employee_id: "", source_id: "" },
                         type: "post",
                         url: "https://localhost:7125/api/Source/addRelationship?"
@@ -100,7 +100,7 @@ function DbManagerPage() {
                         url: "https://localhost:7125/api/Source/removeSourceGroup?"
                 },
                 {
-                        functionName: "Remove Relationship",
+                        functionName: "Remove Source From Employee",
                         params: { employee_id: "", source_id: "" },
                         type: "delete",
                         url: "https://localhost:7125/api/Source/removeRelationship?"
@@ -205,6 +205,7 @@ function DbManagerPage() {
                 } else {
                         getData(position).then((response) => {
                                 alert(response.data.message)
+                                console.log(response.data)
                         }).catch((err) => {
                                 if (err.response) {
                                         alert("unkown error");

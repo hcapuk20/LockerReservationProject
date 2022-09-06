@@ -27,7 +27,7 @@ function Buttons() {
                     <Table >
                         <TableHead>
                             <TableRow>
-                                <TableCell> Id</TableCell>
+                                <TableCell> Source Group Id</TableCell>
                                 <TableCell>  Name</TableCell>
                                 <TableCell>  Actions</TableCell>
                             </TableRow>

@@ -8,7 +8,8 @@ import AuthContext from "../context/AuthProvider";
 import useAuth from '../auth/useAuth';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import FiberDvrIcon from '@mui/icons-material/FiberDvr';
+
+import Pic from '../images/images.js';
 
 
 function Navbar({ landingPage }) {
@@ -44,8 +45,11 @@ function Navbar({ landingPage }) {
                 <Box sx={{
                     display: { xs: "none", md: "flex" }
                 }}>
-                    <FiberDvrIcon sx={{ width: 50, mt: 2.5, ml:0 ,mr:0 }} />
-                    <Typography variant="h5" sx={{ width: 450, margin: 1.5, color: '#fff', my: 2, ml: 1}}>
+                    
+                    <Box sx={{  mt: 2.5, ml: 2.5, mr: 0 }} >
+                        <Pic />
+                    </Box>
+                    <Typography variant="h5" sx={{ width: 450, margin: 1.5, color: '#fff', my: 2, ml: 1 }}>
 
                         {landingPage}
 

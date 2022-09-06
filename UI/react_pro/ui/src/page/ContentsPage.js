@@ -47,7 +47,6 @@ function ContentsPage() {
     function showContent(change_index) {
         const newState = showInnerTable.map((value, index) => {
             if (index === change_index) {
-                console.log("changed")
                 return (!value);
             }
             return value;
@@ -97,7 +96,7 @@ function ContentsPage() {
                                                 alignItems: 'center',
                                             }}>
                                                 <Button size="small" variant="outlined" sx={{ margin: 1 }} onClick={() => showContent(index)} >
-                                                    Show content
+                                                    Show Owners
                                                 </Button>
                                             </Box>
 

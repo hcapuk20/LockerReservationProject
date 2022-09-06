@@ -42,6 +42,7 @@ function LoginPage() {
 
 
             const response = await axios.post(`/api/Token/login?id=${first}&password=${second}`);
+           
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
             setAuth({ firstName: first, password: second, userData: response.data.employee });
             navigate('/navigationpage');

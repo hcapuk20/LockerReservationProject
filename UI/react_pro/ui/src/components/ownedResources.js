@@ -41,7 +41,7 @@ function NonAdminPage() {
         async function fetchData() {
             try {
                 const response = await axios.get(`https://localhost:7125/api/Source/getAllSourceGroups`)
-                console.log(response.data.data)
+          
                 setSourceGroups(response.data.data)
             } catch (err) {
                 console.log(err);
@@ -65,7 +65,7 @@ function NonAdminPage() {
                 for (let index = 0; index < sourceGroups.length; index++){
                     if(sourceGroups[index].id === value){
                         icon= sourceGroups[index].name
-                        console.log(icon)
+                      
                         attr.push(<TableCell>{sourceGroups[index].name}</TableCell>)
                     }
                 }
