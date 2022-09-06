@@ -90,7 +90,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getAllSourceGroups")]
-        [Authorize(Roles = "DbManager")]
+        
 
         public async Task<ActionResult<Response<List<ReturnSourceGroupDTO>>>> GetAllSourceGroups()
         {
@@ -124,7 +124,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getSourcesOfEmployee")]
-        [Authorize(Roles = "DbManager")]
+        
 
         public async Task<ActionResult<Response<List<Source>>>> GetSourcesOfEmployee(int employee_id)
         {
