@@ -58,7 +58,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getAllSources")]
-        [Authorize(Roles = "DbManager")]
+ 
 
         public async Task<ActionResult<Response<List<ReturnSourceDTO>>>> GetAllSources()
         {
@@ -90,8 +90,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getAllSourceGroups")]
-        
-
+       
         public async Task<ActionResult<Response<List<ReturnSourceGroupDTO>>>> GetAllSourceGroups()
         {
             return Ok(await _ISourceService.GetAllSourceGroups());
@@ -124,7 +123,7 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getSourcesOfEmployee")]
-        
+      
 
         public async Task<ActionResult<Response<List<Source>>>> GetSourcesOfEmployee(int employee_id)
         {
@@ -132,7 +131,6 @@ namespace LRProject.Controllers
         }
         [HttpGet]
         [Route("getOwnersOfSource")]
-        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<List<EmpDTOIdName>>>> GetOwnersOfSource(int source_id)
         {
@@ -143,7 +141,7 @@ namespace LRProject.Controllers
 
         [HttpDelete]
         [Route("removeRelationship")]
-        [Authorize(Roles = "DbManager")]
+      
 
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> RemoveRelationship(int employee_id, int source_id)
         {
@@ -168,7 +166,6 @@ namespace LRProject.Controllers
         }
         [HttpPut]
         [Route("updateRelationship")]
-        [Authorize(Roles = "DbManager")]
 
         public async Task<ActionResult<Response<ReturnEmployeeDTO>>> UpdateRelationship(int emp_id, int source_id, int new_source_id)
         {
